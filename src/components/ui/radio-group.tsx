@@ -21,8 +21,10 @@ function Radio({ checked = false, disabled, className }: RadioProps) {
   return (
     <span
       className={cn(
-        "grid size-5 shrink-0 place-items-center rounded-full border-2 bg-white transition-colors",
-        checked ? "border-brand-primary" : "border-text-disabled",
+        "grid size-5 shrink-0 place-items-center rounded-full bg-white transition-colors",
+        checked
+          ? "border-2 border-brand-primary"
+          : "border-[1.5px] border-text-disabled",
         !disabled && !checked && "group-hover:border-brand-primary",
         className
       )}

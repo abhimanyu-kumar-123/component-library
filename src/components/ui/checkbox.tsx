@@ -42,10 +42,10 @@ function Checkbox({
   const control = (
     <span
       className={cn(
-        "grid size-5 shrink-0 place-items-center rounded-full border-2 transition-colors [&_svg]:size-3",
+        "grid size-5 shrink-0 place-items-center rounded-full transition-colors [&_svg]:size-3.5",
         isChecked
-          ? "border-brand-primary bg-brand-primary text-white"
-          : "border-text-disabled bg-white",
+          ? "border-2 border-brand-primary bg-brand-primary text-white"
+          : "border-[1.5px] border-text-disabled bg-white",
         !disabled && !isChecked && "group-hover:border-brand-primary"
       )}
     >
