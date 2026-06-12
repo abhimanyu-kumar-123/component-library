@@ -30,6 +30,7 @@ import { BottomNav } from "@/components/ui/bottom-nav";
 import { BlueCardBackground } from "@/components/ui/blue-card-background";
 import { ActionDeck } from "@/components/ui/action-deck";
 import { SectionTitle } from "@/components/ui/section-title";
+import { GoogleEmptyState } from "@/components/google-empty-state";
 import { StrategyCard } from "@/components/ui/strategy-card";
 import { CollapsibleCard } from "@/components/ui/collapsible-card";
 import { ListCard, ListCardButton } from "@/components/ui/list-card";
@@ -60,11 +61,13 @@ function MetricCell({
   value,
   delta,
   tone = "up",
+  showDelta = true,
 }: {
   label: string;
   value: string;
   delta: string;
   tone?: "up" | "down";
+  showDelta?: boolean;
 }) {
   return (
     <div className="flex flex-col gap-2 rounded-xl border border-white bg-white p-3">
@@ -78,7 +81,7 @@ function MetricCell({
         <span className="type-h1 text-text-primary">
           {value}
         </span>
-        <Delta value={delta} tone={tone} />
+        {showDelta && <Delta value={delta} tone={tone} />}
       </div>
     </div>
   );
@@ -276,7 +279,12 @@ const ACTION_CARDS = [
 
 export default function HomeScreen() {
   const router = useRouter();
-  const [metric, setMetric] = React.useState("google");
+  const [metric, setMetric] = React.useState("meta");
+  // Weekly Strategy channel — Google shows the "not started" empty state.
+  const [weeklyChannel, setWeeklyChannel] = React.useState("meta");
+  // Time period — deltas only show for "This Week", never "Today".
+  const [period, setPeriod] = React.useState("today");
+  const showDelta = period !== "today";
   const weeklyRef = React.useRef<HTMLElement>(null);
 
   // iOS Safari only fires CSS `:active` (press) states on tap when a touch
@@ -350,9 +358,9 @@ export default function HomeScreen() {
                 options={[
                   { label: "Today", value: "today" },
                   { label: "This Week", value: "this-week" },
-                  { label: "This Month", value: "this-month" },
                 ]}
-                defaultValue="today"
+                value={period}
+                onValueChange={setPeriod}
               />
               <Switch
                 className="min-w-0 flex-1 [&_[role=tab]]:px-2"
@@ -366,10 +374,17 @@ export default function HomeScreen() {
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="relative">
+              <div
+                className={cn(
+                  "space-y-2",
+                  metric === "google" && "invisible"
+                )}
+                aria-hidden={metric === "google"}
+              >
               <div className="grid grid-cols-2 gap-2">
-                <MetricCell label="Orders placed" value="500" delta="15%" />
-                <MetricCell label="Projected GMV" value="₹2.4L" delta="12%" />
+                <MetricCell label="Orders placed" value="500" delta="15%" showDelta={showDelta} />
+                <MetricCell label="Projected GMV" value="₹2.4L" delta="12%" showDelta={showDelta} />
               </div>
 
               {/* Spends — splits into two blocks on the Meta tab */}
@@ -422,13 +437,28 @@ export default function HomeScreen() {
               )}
 
               <div className="grid grid-cols-2 gap-2">
-                <MetricCell label="CPO" value="₹640" delta="₹20" tone="down" />
+                <MetricCell
+                  label="CPO"
+                  value="₹640"
+                  delta="₹20"
+                  tone="down"
+                  showDelta={showDelta}
+                />
                 <MetricCell
                   label="Last week profit"
                   value="12%"
                   delta="15%"
+                  showDelta={showDelta}
                 />
               </div>
+              </div>
+
+              {metric === "google" && (
+                <GoogleEmptyState
+                  onCta={() => router.push("/chat")}
+                  className="absolute inset-0"
+                />
+              )}
             </div>
           </section>
 
@@ -504,9 +534,14 @@ export default function HomeScreen() {
                 { label: "Meta", value: "meta" },
                 { label: "Google", value: "google" },
               ]}
-              defaultValue="google"
+              value={weeklyChannel}
+              onValueChange={setWeeklyChannel}
             />
 
+            {weeklyChannel === "google" ? (
+              <GoogleEmptyState onCta={() => router.push("/chat")} />
+            ) : (
+              <>
             {/* Problem identified */}
             <div className="flex flex-col gap-3 rounded-2xl bg-white p-3">
               <div className="flex items-center justify-between">
@@ -667,6 +702,8 @@ export default function HomeScreen() {
                 }
               />
             </CollapsibleCard>
+              </>
+            )}
           </section>
 
           {/* Logistics Tracking */}

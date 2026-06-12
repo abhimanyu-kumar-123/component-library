@@ -23,7 +23,7 @@ function Radio({ checked = false, disabled, className }: RadioProps) {
       className={cn(
         "grid size-5 shrink-0 place-items-center rounded-full bg-white transition-colors",
         checked
-          ? "border-2 border-brand-primary"
+          ? "border-[1.5px] border-brand-primary"
           : "border-[1.5px] border-text-disabled",
         !disabled && !checked && "group-hover:border-brand-primary",
         className
