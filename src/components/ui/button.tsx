@@ -23,10 +23,6 @@ const buttonVariants = cva(
         // Ghost — transparent, brand-coloured text; subtle tint on hover/press.
         ghost:
           "text-brand-primary hover:bg-brand-primary/10 active:bg-brand-primary/10 disabled:bg-transparent disabled:text-text-disabled",
-        // Destructive — white "glass" surface with the danger token for text +
-        // border; the icon inherits currentColor, so it renders red on white.
-        destructive:
-          "border border-danger/40 bg-white/60 text-danger shadow-[0px_5px_10px_rgba(0,0,0,0.05)] hover:bg-danger-light hover:shadow-[0px_5px_5px_rgba(0,0,0,0.05)] active:bg-danger-light active:shadow-[0px_5px_5px_rgba(0,0,0,0.05)] disabled:border-transparent disabled:bg-white disabled:text-text-disabled disabled:shadow-none",
       },
       size: {
         lg: "rounded-lg p-3 text-[13px]",

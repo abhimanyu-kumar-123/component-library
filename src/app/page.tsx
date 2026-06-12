@@ -624,8 +624,7 @@ text-warning-default / bg-warning-light     border-border-divider
   {
     slug: "button",
     name: "Button",
-    description:
-      "Primary / secondary / ghost / destructive actions in three sizes, with haptics.",
+    description: "Primary / secondary actions in three sizes, with haptics.",
     preview: (
       <div className="flex flex-wrap items-center gap-4">
         <Button variant="primary" size="lg">
@@ -634,20 +633,16 @@ text-warning-default / bg-warning-light     border-border-divider
         <Button variant="secondary" size="lg">
           Secondary
         </Button>
-        <Button variant="destructive" size="lg">
-          <Trash />
-          Delete
-        </Button>
         <Button variant="primary" size="md">
           <ThumbsUp />
           With icon
         </Button>
+        <Button variant="secondary" size="sm">
+          Small
+        </Button>
         <Button variant="ghost">
           View all
           <CaretRight />
-        </Button>
-        <Button variant="destructive" size="icon-md" aria-label="Delete">
-          <Trash />
         </Button>
         <Button variant="primary" size="lg" disabled>
           Disabled
@@ -659,8 +654,8 @@ text-warning-default / bg-warning-light     border-border-divider
 <Button variant="primary" size="lg">Primary</Button>
 <Button variant="secondary" size="lg">Secondary</Button>
 <Button variant="ghost">View all<CaretRight /></Button>  {/* always lg */}
-<Button variant="destructive"><Trash />Delete</Button>   {/* red text + red icon on white */}
 <Button size="md"><ThumbsUp />With icon</Button>
+<Button size="sm">Small</Button>
 <Button disabled>Disabled</Button>`,
   },
   {

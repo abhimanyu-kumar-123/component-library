@@ -59,7 +59,7 @@ import { ThumbsUp } from "lucide-react";
 <Button disabled>Disabled</Button>
 <Button render={<a href="/x" />}>As link</Button> // polymorphic via Base UI render prop
 ```
-- `variant`: `primary` (indigo gradient, teal inner stroke) · `secondary` (glass white, dark text) · `ghost` (transparent, brand-blue text, link-style) · `destructive` (glass white surface, `danger` red text + red icon + red border; pale-red hover — for delete/remove)
+- `variant`: `primary` (indigo gradient, teal inner stroke) · `secondary` (glass white, dark text) · `ghost` (transparent, brand-blue text, link-style)
 - `size`: `lg` · `md` (default) · `sm` · `icon-lg` · `icon-md` · `icon-sm`
 - **Rule:** the `ghost` variant always renders at `lg` size — any `size` prop passed to a ghost button is ignored.
 - States (default / hover / disabled) are handled with Tailwind state variants — no `state` prop needed.
