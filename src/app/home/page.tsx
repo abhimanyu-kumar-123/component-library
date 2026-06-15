@@ -30,6 +30,7 @@ import { BottomNav } from "@/components/ui/bottom-nav";
 import { BlueCardBackground } from "@/components/ui/blue-card-background";
 import { ActionDeck } from "@/components/ui/action-deck";
 import { SectionTitle } from "@/components/ui/section-title";
+import { DataCard } from "@/components/ui/data-card";
 import { GoogleEmptyState } from "@/components/google-empty-state";
 import { StrategyCard } from "@/components/ui/strategy-card";
 import { CollapsibleCard } from "@/components/ui/collapsible-card";
@@ -40,92 +41,6 @@ import { GoogleLogo, MetaLogoWhite, ShopdeckLogo } from "@/components/brand-logo
 const AVATAR = "https://i.pravatar.cc/120?img=47";
 
 /* ── Screen-specific bits (not library components) ─────────────────── */
-
-function Delta({ value, tone }: { value: string; tone: "up" | "down" }) {
-  const up = tone === "up";
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center gap-0.5 rounded px-1 py-0.5 text-[10px] font-medium leading-[14px]",
-        up ? "bg-success-light text-success" : "bg-danger-light text-danger"
-      )}
-    >
-      <ArrowUpRight className="size-2" weight="bold" />
-      {value}
-    </span>
-  );
-}
-
-function MetricCell({
-  label,
-  value,
-  delta,
-  tone = "up",
-  showDelta = true,
-}: {
-  label: string;
-  value: string;
-  delta: string;
-  tone?: "up" | "down";
-  showDelta?: boolean;
-}) {
-  return (
-    <div className="flex flex-col gap-2 rounded-xl border border-white bg-white p-3">
-      <div className="flex items-center justify-between">
-        <span className="truncate type-caption text-text-secondary">
-          {label}
-        </span>
-        <ChatTeardropText className="size-4 shrink-0 text-text-secondary/60" />
-      </div>
-      <div className="flex items-center gap-2">
-        <span className="type-h1 text-text-primary">
-          {value}
-        </span>
-        {showDelta && <Delta value={delta} tone={tone} />}
-      </div>
-    </div>
-  );
-}
-
-/** One column of the split "Meta" spends card. */
-function SpendBlock({
-  label,
-  value,
-  cap,
-  pct,
-  color,
-}: {
-  label: string;
-  value: string;
-  cap: string;
-  pct: number;
-  color: string;
-}) {
-  return (
-    <div className="flex min-w-0 flex-1 flex-col gap-2 p-3">
-      <div className="flex items-center justify-between">
-        <span className="truncate type-caption text-text-secondary">
-          {label}
-        </span>
-        <ChatTeardropText className="size-4 shrink-0 text-text-secondary/60" />
-      </div>
-      <div className="flex items-end gap-1">
-        <span className="type-h1 text-text-primary">
-          {value}
-        </span>
-        <span className="text-[10px] leading-[17px] text-text-secondary">
-          {cap}
-        </span>
-      </div>
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-app">
-        <div
-          className="h-full rounded-full"
-          style={{ width: `${pct}%`, backgroundColor: color }}
-        />
-      </div>
-    </div>
-  );
-}
 
 function SectionHeader({
   icon,
@@ -383,72 +298,66 @@ export default function HomeScreen() {
                 aria-hidden={metric === "google"}
               >
               <div className="grid grid-cols-2 gap-2">
-                <MetricCell label="Orders placed" value="500" delta="15%" showDelta={showDelta} />
-                <MetricCell label="Projected GMV" value="₹2.4L" delta="12%" showDelta={showDelta} />
+                <DataCard
+                  type="single"
+                  metrics={[
+                    {
+                      label: "Orders placed",
+                      value: "500",
+                      delta: showDelta ? { value: "15%" } : undefined,
+                    },
+                  ]}
+                />
+                <DataCard
+                  type="single"
+                  metrics={[
+                    {
+                      label: "Projected GMV",
+                      value: "₹2.4L",
+                      delta: showDelta ? { value: "12%" } : undefined,
+                    },
+                  ]}
+                />
               </div>
 
               {/* Spends — splits into two blocks on the Meta tab */}
               {metric === "meta" ? (
-                <div className="flex items-stretch overflow-hidden rounded-xl border border-white bg-white">
-                  <SpendBlock
-                    label="Normal spends"
-                    value="₹2.4L"
-                    cap="/₹5.0 L"
-                    pct={48}
-                    color="#e08a2d"
-                  />
-                  <div className="my-3 w-px self-stretch bg-neutral-100" />
-                  <SpendBlock
-                    label="CPP/ROAS spends"
-                    value="₹6.4L"
-                    cap="/₹5.0 L"
-                    pct={100}
-                    color="#f44336"
-                  />
-                </div>
+                <DataCard
+                  type="double"
+                  metrics={[
+                    { label: "Normal spends", value: "₹2.4L", cap: "/ ₹5.0 L", progress: { pct: 48 } },
+                    { label: "CPP/ROAS spends", value: "₹6.4L", cap: "/ ₹5.0 L", progress: { pct: 100, tone: "red" } },
+                  ]}
+                />
               ) : (
-                <div className="flex flex-col gap-2 rounded-xl border border-white bg-white p-3">
-                  <div className="flex items-center justify-between">
-                    <span className="type-caption text-text-secondary">
-                      Spends
-                    </span>
-                    <ChatTeardropText className="size-4 text-text-secondary/60" />
-                  </div>
-                  <div className="flex items-end justify-between">
-                    <div className="flex items-end gap-1">
-                      <span className="type-h1 text-text-primary">
-                        ₹2.4L
-                      </span>
-                      <span className="text-[10px] leading-[17px] text-text-secondary">
-                        /₹5.0 L
-                      </span>
-                    </div>
-                    <span className="text-[10px] font-medium leading-[14px] text-text-secondary">
-                      50% Utilised
-                    </span>
-                  </div>
-                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-app">
-                    <div
-                      className="h-full rounded-full bg-warning-default"
-                      style={{ width: "46%" }}
-                    />
-                  </div>
-                </div>
+                <DataCard
+                  type="single"
+                  metrics={[
+                    { label: "Spends", value: "₹2.4L", cap: "/ ₹5.0 L", progress: { pct: 50 } },
+                  ]}
+                />
               )}
 
               <div className="grid grid-cols-2 gap-2">
-                <MetricCell
-                  label="CPO"
-                  value="₹640"
-                  delta="₹20"
-                  tone="down"
-                  showDelta={showDelta}
+                <DataCard
+                  type="single"
+                  metrics={[
+                    {
+                      label: "CPO",
+                      value: "₹640",
+                      delta: showDelta ? { value: "₹20", tone: "down" } : undefined,
+                    },
+                  ]}
                 />
-                <MetricCell
-                  label="Last week profit"
-                  value="12%"
-                  delta="15%"
-                  showDelta={showDelta}
+                <DataCard
+                  type="single"
+                  metrics={[
+                    {
+                      label: "Last week profit",
+                      value: "12%",
+                      delta: showDelta ? { value: "15%" } : undefined,
+                    },
+                  ]}
                 />
               </div>
               </div>

@@ -3,9 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import {
-  ArrowUpRight,
   ChartBar,
-  ChatTeardropText,
   Clock,
   Globe,
   LightbulbFilament,
@@ -26,117 +24,12 @@ import { Pill } from "@/components/ui/pill";
 import { ActionDeck } from "@/components/ui/action-deck";
 import { CollapsibleCard } from "@/components/ui/collapsible-card";
 import { ListCard, ListCardButton } from "@/components/ui/list-card";
+import { DataCard } from "@/components/ui/data-card";
 import { BottomNav } from "@/components/ui/bottom-nav";
 import { GoogleEmptyState } from "@/components/google-empty-state";
 import { GoogleLogo, MetaLogoWhite, ShopdeckLogo } from "@/components/brand-logos";
 
 const AVATAR = "https://i.pravatar.cc/120?img=47";
-
-/* ── Metric cells (home-screen pattern) ──────────────────────────────── */
-function Delta({ value, tone = "up" }: { value: string; tone?: "up" | "down" }) {
-  const up = tone === "up";
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 type-caption",
-        up ? "bg-success-light text-success" : "bg-danger-light text-danger"
-      )}
-    >
-      <ArrowUpRight className="size-2.5" weight="bold" />
-      {value}
-    </span>
-  );
-}
-
-type Metric = {
-  label: string;
-  value: string;
-  delta?: string;
-  deltaTone?: "up" | "down";
-  cap?: string;
-  bar?: { pct: number; tone: "orange" | "red" };
-};
-
-function MetricCell({
-  label,
-  value,
-  delta,
-  deltaTone,
-  cap,
-  bar,
-  showDelta = true,
-}: Metric & { showDelta?: boolean }) {
-  return (
-    <div className="flex flex-col gap-2 rounded-2xl bg-white p-3">
-      <div className="flex items-center justify-between gap-2">
-        <span className="truncate type-caption text-text-secondary">{label}</span>
-        <ChatTeardropText className="size-4 shrink-0 text-text-secondary/60" />
-      </div>
-      <div className="flex flex-wrap items-end gap-1.5">
-        <span className="type-h1 text-text-primary">{value}</span>
-        {cap && <span className="type-caption text-text-secondary">{cap}</span>}
-        {showDelta && delta && <Delta value={delta} tone={deltaTone} />}
-      </div>
-      {bar && (
-        <span className="block h-1.5 w-full overflow-hidden rounded-full bg-surface-app">
-          <span
-            className={cn(
-              "block h-full rounded-full",
-              bar.tone === "red" ? "bg-danger" : "bg-warning-default"
-            )}
-            style={{ width: `${bar.pct}%` }}
-          />
-        </span>
-      )}
-    </div>
-  );
-}
-
-const TOP_METRICS: Metric[] = [
-  { label: "Orders placed", value: "500", delta: "15%" },
-  { label: "Revenue", value: "₹2.4L", delta: "12%" },
-];
-const BOTTOM_METRICS: Metric[] = [
-  { label: "Visitors", value: "1.2L", delta: "15%" },
-  { label: "CPO", value: "₹640", delta: "₹20", deltaTone: "down" },
-];
-
-/** One half of the combined Spends card (home-screen split pattern). */
-function SpendBlock({
-  label,
-  value,
-  cap,
-  tone,
-  pct,
-}: {
-  label: string;
-  value: string;
-  cap: string;
-  tone: "orange" | "red";
-  pct: number;
-}) {
-  return (
-    <div className="flex min-w-0 flex-1 flex-col gap-2 p-3">
-      <div className="flex items-center justify-between gap-2">
-        <span className="truncate type-caption text-text-secondary">{label}</span>
-        <ChatTeardropText className="size-4 shrink-0 text-text-secondary/60" />
-      </div>
-      <div className="flex flex-wrap items-end gap-1">
-        <span className="type-h1 text-text-primary">{value}</span>
-        <span className="type-caption text-text-secondary">{cap}</span>
-      </div>
-      <span className="block h-1.5 w-full overflow-hidden rounded-full bg-surface-app">
-        <span
-          className={cn(
-            "block h-full rounded-full",
-            tone === "red" ? "bg-danger" : "bg-warning-default"
-          )}
-          style={{ width: `${pct}%` }}
-        />
-      </span>
-    </div>
-  );
-}
 
 /* ── Action Needed deck content ──────────────────────────────────────── */
 const ACTION_CARDS = [
@@ -267,62 +160,67 @@ export default function HitsHomeScreen() {
                 aria-hidden={segment === "google"}
               >
                 <div className="grid grid-cols-2 gap-3">
-                  {TOP_METRICS.map((m) => (
-                    <MetricCell key={m.label} {...m} showDelta={showDelta} />
-                  ))}
+                  <DataCard
+                    type="single"
+                    metrics={[
+                      {
+                        label: "Orders placed",
+                        value: "500",
+                        delta: showDelta ? { value: "15%" } : undefined,
+                      },
+                    ]}
+                  />
+                  <DataCard
+                    type="single"
+                    metrics={[
+                      {
+                        label: "Revenue",
+                        value: "₹2.4L",
+                        delta: showDelta ? { value: "12%" } : undefined,
+                      },
+                    ]}
+                  />
                 </div>
 
                 {/* Spends — Meta splits Normal + CPP/ROAS; else a single card. */}
                 {segment === "meta" ? (
-                  <div className="flex items-stretch rounded-2xl bg-white">
-                    <SpendBlock
-                      label="Normal spends"
-                      value="₹2.4L"
-                      cap="/ ₹5.0L"
-                      tone="orange"
-                      pct={48}
-                    />
-                    <span className="my-3 w-px shrink-0 bg-border-divider" />
-                    <SpendBlock
-                      label="CPP/ROAS spends"
-                      value="₹6.4L"
-                      cap="/ ₹5.0L"
-                      tone="red"
-                      pct={100}
-                    />
-                  </div>
+                  <DataCard
+                    type="double"
+                    metrics={[
+                      { label: "Normal spends", value: "₹2.4L", cap: "/ ₹5.0 L", progress: { pct: 48 } },
+                      { label: "CPP/ROAS spends", value: "₹6.4L", cap: "/ ₹5.0 L", progress: { pct: 100, tone: "red" } },
+                    ]}
+                  />
                 ) : (
-                  <div className="flex flex-col gap-2 rounded-2xl bg-white p-3">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="type-caption text-text-secondary">
-                        Spends
-                      </span>
-                      <ChatTeardropText className="size-4 shrink-0 text-text-secondary/60" />
-                    </div>
-                    <div className="flex items-end justify-between gap-2">
-                      <span className="flex items-end gap-1">
-                        <span className="type-h1 text-text-primary">₹2.4L</span>
-                        <span className="type-caption text-text-secondary">
-                          / ₹5.0 L
-                        </span>
-                      </span>
-                      <span className="type-body-2 text-text-secondary">
-                        50% Utilised
-                      </span>
-                    </div>
-                    <span className="block h-1.5 w-full overflow-hidden rounded-full bg-surface-app">
-                      <span
-                        className="block h-full rounded-full bg-warning-default"
-                        style={{ width: "50%" }}
-                      />
-                    </span>
-                  </div>
+                  <DataCard
+                    type="single"
+                    metrics={[
+                      { label: "Spends", value: "₹2.4L", cap: "/ ₹5.0 L", progress: { pct: 50 } },
+                    ]}
+                  />
                 )}
 
                 <div className="grid grid-cols-2 gap-3">
-                  {BOTTOM_METRICS.map((m) => (
-                    <MetricCell key={m.label} {...m} showDelta={showDelta} />
-                  ))}
+                  <DataCard
+                    type="single"
+                    metrics={[
+                      {
+                        label: "Visitors",
+                        value: "1.2L",
+                        delta: showDelta ? { value: "15%" } : undefined,
+                      },
+                    ]}
+                  />
+                  <DataCard
+                    type="single"
+                    metrics={[
+                      {
+                        label: "CPO",
+                        value: "₹640",
+                        delta: showDelta ? { value: "₹20", tone: "down" } : undefined,
+                      },
+                    ]}
+                  />
                 </div>
               </div>
 
