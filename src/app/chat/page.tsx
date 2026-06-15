@@ -276,11 +276,8 @@ function ChatScreen() {
                     glow ? "opacity-100" : "opacity-0"
                   )}
                 >
-                  {/* steady soft halo — keeps a visible light-red ring at all times */}
-                  <span className="absolute inset-[-5px] rounded-full bg-danger/20" />
-                  {/* expanding pulse rings */}
+                  {/* single expanding pulse ring */}
                   <span className="absolute inset-0 rounded-full bg-danger/45 animate-artifact-pulse" />
-                  <span className="absolute inset-0 rounded-full bg-danger/45 animate-artifact-pulse [animation-delay:1.1s]" />
                 </span>
                 <RoundButton
                   size="icon-md"
