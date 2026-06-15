@@ -154,7 +154,7 @@ function ChatScreen() {
               <Switch
                 options={[
                   { label: "Chat", value: "chat" },
-                  { label: "Activity", value: "activity" },
+                  { label: "To-Do", value: "activity" },
                 ]}
                 value={tab}
                 onValueChange={(v) => setTab(v as "chat" | "activity")}
@@ -163,7 +163,7 @@ function ChatScreen() {
             right={
               <RoundButton
                 size="icon-md"
-                aria-label="Artifacts"
+                aria-label="Collections"
                 onClick={() => router.push("/artifacts")}
               >
                 <SquaresFour />

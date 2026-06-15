@@ -67,7 +67,7 @@ export default function ArtifactsScreen() {
                 <CaretLeft />
               </RoundButton>
             }
-            center={<span className="type-h2 text-text-primary">Artifacts</span>}
+            center={<span className="type-h2 text-text-primary">Collections</span>}
           />
         </div>
 
