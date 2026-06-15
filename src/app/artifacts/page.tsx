@@ -22,7 +22,11 @@ type Artifact = {
   name: string;
   time: string;
   status: ArtifactStatus;
+  content?: string;
 };
+
+const RETURN_POLICY =
+  "Items can be returned within 7 days of delivery, provided they are unused and in their original packaging with tags intact. Refunds are issued to the original payment method within 5–7 business days of pickup. Customised, intimate and final-sale items are not eligible for return or exchange.";
 
 const ARTIFACTS: Artifact[] = [
   { id: "site", type: "website", name: "Website creation", time: "10 min ago", status: "action-needed" },
@@ -30,7 +34,7 @@ const ARTIFACTS: Artifact[] = [
   { id: "brand", type: "website", name: "Brand Kit for festive", time: "30 min ago", status: "ongoing" },
   { id: "rto2", type: "report", name: "RTO report for last month", time: "1 hr ago", status: "completed" },
   { id: "catalog", type: "catalog", name: "Festive catalog", time: "2 hr ago", status: "completed" },
-  { id: "policy", type: "document", name: "Return policy doc", time: "yesterday", status: "completed" },
+  { id: "policy", type: "document", name: "Return policy doc", time: "yesterday", status: "completed", content: RETURN_POLICY },
 ];
 
 export default function ArtifactsScreen() {
@@ -94,19 +98,25 @@ export default function ArtifactsScreen() {
             </>
           }
         >
-          {preview && (
-            /* large artifact preview — website/catalog fill a full page,
-               reports/docs keep a framed aspect preview */
-            <div className="overflow-hidden rounded-2xl border border-surface-muted bg-white">
-              {preview.type === "website" || preview.type === "catalog" ? (
+          {preview &&
+            (preview.type === "website" || preview.type === "catalog" ? (
+              <div className="overflow-hidden rounded-2xl border border-surface-muted bg-white">
                 <StorePageFull />
-              ) : (
+              </div>
+            ) : preview.type === "document" ? (
+              /* document → text only */
+              <div className="rounded-2xl border border-surface-muted bg-white p-4">
+                <p className="type-body-1 whitespace-pre-line text-text-primary">
+                  {preview.content}
+                </p>
+              </div>
+            ) : (
+              <div className="overflow-hidden rounded-2xl border border-surface-muted bg-white">
                 <div className="aspect-[4/5] w-full">
                   <ArtifactThumb type={preview.type} size="lg" />
                 </div>
-              )}
-            </div>
-          )}
+              </div>
+            ))}
         </BottomSheet>
       </div>
     </div>

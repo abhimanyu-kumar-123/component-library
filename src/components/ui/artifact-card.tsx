@@ -117,20 +117,23 @@ function TablePreview({ size = "sm" }: { size?: "sm" | "lg" }) {
   );
 }
 
-/** Plain text-document preview — title + paragraph lines (no imagery). */
-function TextPreview({ size = "sm" }: { size?: "sm" | "lg" }) {
+const DEFAULT_DOC_TEXT =
+  "Spend efficiency collapsed after Adenium price hike forced a pivot to fruit tree products";
+
+/** Plain text-document preview — shows the actual document text, no imagery. */
+function TextPreview({
+  text = DEFAULT_DOC_TEXT,
+  size = "sm",
+}: {
+  text?: string;
+  size?: "sm" | "lg";
+}) {
   const lg = size === "lg";
-  const lines = ["w-3/4", "w-full", "w-full", "w-5/6", "w-full", "w-2/3", "w-full", "w-1/2"];
   return (
-    <div className={cn("flex h-full flex-col bg-white", lg ? "gap-2.5 p-4" : "gap-1.5 p-3")}>
-      <span className={cn("rounded-full bg-text-primary/80", lg ? "h-3 w-3/5" : "h-2 w-3/5")} />
-      <span className="h-1" />
-      {lines.map((w, i) => (
-        <span
-          key={i}
-          className={cn("rounded-full bg-surface-app", w, lg ? "h-2.5" : "h-1.5")}
-        />
-      ))}
+    <div className={cn("h-full overflow-hidden bg-white", lg ? "p-4" : "p-3")}>
+      <p className={cn("text-text-primary", lg ? "type-h3" : "type-body-1")}>
+        {text}
+      </p>
     </div>
   );
 }
@@ -138,11 +141,13 @@ function TextPreview({ size = "sm" }: { size?: "sm" | "lg" }) {
 function ArtifactThumb({
   type,
   size = "sm",
+  text,
 }: {
   type: ArtifactType;
   size?: "sm" | "lg";
+  text?: string;
 }) {
-  if (type === "document") return <TextPreview size={size} />;
+  if (type === "document") return <TextPreview text={text} size={size} />;
   if (type === "report") return <TablePreview size={size} />;
   return <StorePreview size={size} />;
 }
@@ -258,6 +263,8 @@ type ArtifactCardProps = {
   /** Relative time, e.g. "10 min ago". */
   time: string;
   status: ArtifactStatus;
+  /** Document body text — rendered as the thumbnail for `type="document"`. */
+  content?: string;
   onClick?: () => void;
   className?: string;
 };
@@ -274,6 +281,7 @@ function ArtifactCard({
   name,
   time,
   status,
+  content,
   onClick,
   className,
 }: ArtifactCardProps) {
@@ -289,7 +297,7 @@ function ArtifactCard({
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-surface-muted bg-white">
         <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.03]">
-          <ArtifactThumb type={type} />
+          <ArtifactThumb type={type} text={content} />
         </div>
 
         {/* Status pill — overlaid so completed cards stay clean and the card
