@@ -360,6 +360,16 @@ export default function HomeScreen() {
                   ]}
                 />
               </div>
+
+              {/* Customer ratings — only for the This Week timeframe. */}
+              {period === "this-week" && (
+                <DataCard
+                  type="ratings"
+                  rating={3.2}
+                  ratingLabel="Customer ratings"
+                  ratingNote="Last 15 days"
+                />
+              )}
               </div>
 
               {metric === "google" && (
