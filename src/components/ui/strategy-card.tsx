@@ -90,7 +90,7 @@ function StrategyCard({
         {(footnote || time) && (
           <div className="flex items-center justify-between gap-2">
             <span className="flex items-center gap-1 type-body-2 text-text-primary">
-              <Clock className="size-4 shrink-0" />
+              <Clock className="size-4 shrink-0 text-text-secondary" />
               {footnote}
             </span>
             {time && (
