@@ -256,6 +256,16 @@ export const COMPONENTS: ComponentIntel[] = [
     pairsWith: ["ListContent", "CollapsibleCard"],
   },
   {
+    slug: "section-card",
+    name: "SectionCard",
+    purpose: "A glass card with the section title inset in its header, wrapping related content.",
+    useWhen: ["A self-contained section block (Recent conversation, Your journey)", "When the title belongs inside the card, not above it"],
+    avoidWhen: ["A header above separate cards (use SectionTitle)", "A single metric (use DataCard)"],
+    priority: "medium",
+    emotionalTone: ["organised", "contained"],
+    pairsWith: ["Pill", "InfoNote", "SectionTitle"],
+  },
+  {
     slug: "callback-bar",
     name: "CallbackBar",
     purpose: "Offer a one-tap callback from a human POC, pinned at the bottom of a screen.",

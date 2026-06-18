@@ -14,27 +14,27 @@ function StepNode({ status }: { status: StepStatus }) {
   }
   if (status === "current") {
     return (
-      <span className="size-2 shrink-0 rounded-full border-[1.5px] border-brand-primary bg-white" />
+      <span className="size-2 shrink-0 rounded-full border border-brand-primary bg-white" />
     );
   }
   if (status === "goal") {
     return (
-      <span className="grid size-2 shrink-0 place-items-center rounded-full border-[1.5px] border-brand-primary bg-white">
-        <span className="size-[3px] rounded-full bg-brand-primary" />
+      <span className="grid size-2 shrink-0 place-items-center rounded-full border border-brand-primary bg-white">
+        <span className="size-0.5 rounded-full bg-brand-primary" />
       </span>
     );
   }
   return (
-    <span className="size-2 shrink-0 rounded-full border-[1.5px] border-border-divider bg-white" />
+    <span className="size-2 shrink-0 rounded-full border border-border-divider bg-white" />
   );
 }
 
 /** The line between two nodes — solid once traversed, dotted ahead. */
 function Connector({ filled }: { filled: boolean }) {
   return filled ? (
-    <span className="h-0.5 flex-1 rounded-full bg-brand-primary" />
+    <span className="h-px flex-1 rounded-full bg-brand-primary" />
   ) : (
-    <span className="h-0 flex-1 border-t-2 border-dotted border-brand-primary/50" />
+    <span className="h-0 flex-1 border-t border-dotted border-brand-primary/50" />
   );
 }
 

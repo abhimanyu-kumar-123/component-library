@@ -10,7 +10,9 @@ import {
   ChartBar,
   ChatTeardropText,
   Check,
+  Clock,
   Gear,
+  ListChecks,
   Globe,
   Heart,
   House,
@@ -42,6 +44,7 @@ import { ProgressBar } from "@/components/ui/progress-bar";
 import { Stepper } from "@/components/ui/stepper";
 import { InfoNote } from "@/components/ui/info-note";
 import { CallbackBar } from "@/components/ui/callback-bar";
+import { SectionCard } from "@/components/ui/section-card";
 import { SectionTitle } from "@/components/ui/section-title";
 import { TextField, SelectField } from "@/components/ui/text-field";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
@@ -114,6 +117,53 @@ const ICONS: { Icon: Icon; name: string }[] = [
   { Icon: Sparkle, name: "Sparkle" },
   { Icon: Trash, name: "Trash" },
 ];
+
+function SectionCardDemo() {
+  const JOURNEY = [
+    { label: "Documents", done: true },
+    { label: "Catalog", done: true },
+    { label: "Launch", done: false },
+  ];
+  return (
+    <div className="flex w-full max-w-[340px] flex-col gap-4">
+      {/* white-body variant — Recent conversation */}
+      <SectionCard icon={<ChatTeardropText weight="fill" />} title="Recent conversation">
+        <div className="flex flex-col gap-2.5">
+          <Pill tone="neutral" background={false} icon={<Clock />}>
+            Jan 11, 11:50AM
+          </Pill>
+          <p className="type-body-1 text-text-primary">
+            Porem ipsum dolor sit amet, consectetur elit. Nunc vulputate libero.
+          </p>
+          <InfoNote>This was discussed in the last conversation</InfoNote>
+        </div>
+      </SectionCard>
+
+      {/* glass-body variant — Your journey */}
+      <SectionCard icon={<ListChecks weight="fill" />} title="Your journey" surface="glass">
+        <div className="flex flex-col gap-2">
+          {JOURNEY.map((s) => (
+            <div
+              key={s.label}
+              className="flex items-center justify-between gap-2 rounded-xl bg-white p-3"
+            >
+              <span className="flex flex-col gap-1">
+                <span className="type-caption text-text-secondary">Jun 15</span>
+                <span className="flex items-center gap-2">
+                  <span className="type-h2 text-text-primary">{s.label}</span>
+                  <Pill tone={s.done ? "success" : "neutral"} background>
+                    {s.done ? "Completed" : "Ongoing"}
+                  </Pill>
+                </span>
+              </span>
+              <CaretRight weight="bold" className="size-3 text-text-secondary" />
+            </div>
+          ))}
+        </div>
+      </SectionCard>
+    </div>
+  );
+}
 
 function CallbackBarDemo() {
   return (
@@ -997,6 +1047,22 @@ const [active, setActive] = useState("Action Needed");
 <ProgressBar tone="orange" value={53} />
 <ProgressBar tone="red" value={86} />
 <ProgressBar tone="blue" value={53} />`,
+  },
+  {
+    slug: "section-card",
+    name: "Section Card",
+    description:
+      "A glass card with the section title inset in its header (Figma 5304:968) — icon + title (+ optional View all) over a body. surface=\"white\" gives an inner white panel (Recent conversation); surface=\"glass\" keeps it transparent for cards-on-glass (Your journey). Use SectionTitle instead when the header sits above separate cards.",
+    preview: <SectionCardDemo />,
+    code: `import { SectionCard } from "@/components/ui/section-card";
+
+<SectionCard icon={<ChatTeardropText />} title="Recent conversation" onViewAll={fn}>
+  {/* body */}
+</SectionCard>
+
+<SectionCard icon={<ListChecks />} title="Your journey" surface="glass">
+  {/* step cards on the glass surface */}
+</SectionCard>`,
   },
   {
     slug: "callback-bar",
