@@ -15,7 +15,7 @@ import { Header } from "@/components/ui/header";
 import { RoundButton } from "@/components/ui/round-button";
 import { SectionTitle } from "@/components/ui/section-title";
 import { TextField, SelectField } from "@/components/ui/text-field";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Toggle } from "@/components/ui/toggle";
 
 /* Indian states for the structured pickup-address dropdown. */
 const STATES = [
@@ -203,11 +203,7 @@ export default function StoreSettingsScreen() {
               title="Fulfilment"
               subtext="Payment options at checkout"
             />
-            <button
-              type="button"
-              onClick={() => setCod((v) => !v)}
-              className="flex w-full items-center justify-between gap-3 rounded-2xl bg-white p-4 text-left outline-none transition-colors active:bg-surface-muted"
-            >
+            <div className="flex w-full items-center justify-between gap-3 rounded-2xl bg-white p-4">
               <span className="flex min-w-0 flex-col gap-1">
                 <span className="type-body-1 text-text-primary">
                   Accept Cash on Delivery
@@ -216,14 +212,13 @@ export default function StoreSettingsScreen() {
                   Let buyers pay in cash when their order arrives
                 </span>
               </span>
-              <Checkbox
+              <Toggle
                 checked={cod}
                 onCheckedChange={setCod}
                 aria-label="Accept Cash on Delivery"
-                tabIndex={-1}
-                className="pointer-events-none shrink-0"
+                className="shrink-0"
               />
-            </button>
+            </div>
           </section>
 
           {saved && isValid && (

@@ -146,6 +146,16 @@ export const COMPONENTS: ComponentIntel[] = [
     pairsWith: ["TextField", "Checkbox", "BottomSheet"],
   },
   {
+    slug: "toggle",
+    name: "Toggle",
+    purpose: "Flip a single on/off setting inline (pill track + sliding knob).",
+    useWhen: ["A binary on/off preference in settings/forms", "Cash-on-delivery, notifications, store visibility"],
+    avoidWhen: ["Choosing between 2–3 views (use Switch)", "Multi-select (use Checkbox)", "Single-select from a list (use RadioGroup)"],
+    priority: "low",
+    emotionalTone: ["effortless", "clear"],
+    pairsWith: ["SectionTitle", "TextField"],
+  },
+  {
     slug: "bottom-sheet",
     name: "BottomSheet",
     purpose: "A focused task, form or preview without leaving the screen.",

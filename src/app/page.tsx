@@ -35,6 +35,7 @@ import { Dropdown } from "@/components/ui/dropdown";
 import { SelectorPill } from "@/components/ui/selector-pill";
 import { Pill } from "@/components/ui/pill";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Toggle } from "@/components/ui/toggle";
 import { RadioGroup } from "@/components/ui/radio-group";
 import { DataCard } from "@/components/ui/data-card";
 import { ProgressBar } from "@/components/ui/progress-bar";
@@ -207,6 +208,18 @@ function RadioDemo() {
         { label: "Not registered yet", value: "none", disabled: true },
       ]}
     />
+  );
+}
+
+function ToggleDemo() {
+  const [cod, setCod] = React.useState(true);
+  const [notify, setNotify] = React.useState(false);
+  return (
+    <div className="flex w-full max-w-[320px] flex-col gap-4">
+      <Toggle checked={cod} onCheckedChange={setCod} label="Accept Cash on Delivery" />
+      <Toggle checked={notify} onCheckedChange={setNotify} label="Order notifications" />
+      <Toggle defaultChecked disabled label="Store live (locked)" />
+    </div>
   );
 }
 
@@ -1001,6 +1014,20 @@ const [active, setActive] = useState("Action Needed");
     { label: "Private limited", value: "pvt" },
     { label: "Not registered yet", value: "none", disabled: true },
   ]}
+/>`,
+  },
+  {
+    slug: "toggle",
+    name: "Toggle",
+    description:
+      "iOS-style on/off toggle — a pill track with a sliding white knob (brand-gradient track when on, grey when off). For a single binary setting; use Switch for 2–3 view options and Checkbox for multi-select. Controlled or uncontrolled, optional label, disabled.",
+    preview: <ToggleDemo />,
+    code: `import { Toggle } from "@/components/ui/toggle";
+
+<Toggle
+  checked={cod}
+  onCheckedChange={setCod}
+  label="Accept Cash on Delivery"
 />`,
   },
   {

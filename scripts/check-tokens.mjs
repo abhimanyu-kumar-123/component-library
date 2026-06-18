@@ -23,8 +23,9 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
  *  which intentionally enumerates the gradient stop values). */
 const SKIP = [/globals\.css$/, /brand-logos/, /\/icons\.tsx$/, /lib\/design-os\.ts$/];
 
-/** Arbitrary shadows that are sanctioned (brand inner stroke on gradient CTAs). */
-const ALLOWED_SHADOW = [/var\(--accent-teal\)/];
+/** Arbitrary shadows that are sanctioned (brand inner stroke on gradient CTAs;
+ *  the small elevation on the Toggle knob). */
+const ALLOWED_SHADOW = [/var\(--accent-teal\)/, /0px_1px_2px_rgba\(0,0,0,0\.25\)/];
 
 function walk(dir, out = []) {
   for (const name of readdirSync(dir)) {
