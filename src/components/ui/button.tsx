@@ -31,6 +31,13 @@ const buttonVariants = cva(
         // icon (mirrors secondary). For a subtler delete/remove action.
         "destructive-secondary":
           "border border-white bg-white/60 text-danger shadow-[0px_5px_10px_rgba(0,0,0,0.05)] hover:bg-white hover:shadow-[0px_5px_5px_rgba(0,0,0,0.05)] active:bg-white active:shadow-[0px_5px_5px_rgba(0,0,0,0.05)] disabled:border-transparent disabled:bg-white disabled:text-[#ffd9d9] disabled:shadow-none",
+        // ── On-dark pair — USE ONLY ON DARK / COLOURED SURFACES (e.g. the blue
+        // ActionDeck / Card). `on-dark` = solid white primary; `on-dark-secondary`
+        // = translucent outline. Both have a white focus ring.
+        "on-dark":
+          "bg-white text-text-primary shadow-[0px_2px_6px_rgba(0,0,0,0.05)] hover:bg-white/90 active:bg-white/90 focus-visible:ring-white/60 disabled:bg-white disabled:opacity-50",
+        "on-dark-secondary":
+          "border border-white/30 bg-transparent text-white hover:bg-white/10 active:bg-white/10 focus-visible:ring-white/60 disabled:opacity-50",
       },
       size: {
         lg: "rounded-lg p-3 text-[13px]",

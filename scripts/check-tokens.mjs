@@ -29,6 +29,7 @@ const ALLOWED_SHADOW = [
   /var\(--accent-teal\)/,
   /0px_1px_2px_rgba\(0,0,0,0\.25\)/, // Toggle knob
   /0px_-10px_30px_rgba\(0,0,0,0\.1\)/, // CallbackBar upward float shadow
+  /0px_2px_6px_rgba\(0,0,0,0\.05\)/, // on-dark / card button subtle elevation
 ];
 
 function walk(dir, out = []) {

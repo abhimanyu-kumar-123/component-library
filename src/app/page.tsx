@@ -969,6 +969,27 @@ import { Trash } from "@phosphor-icons/react";
 <Button variant="destructive-secondary" size="icon-md"><Trash /></Button>`,
   },
   {
+    slug: "button-on-dark",
+    name: "Dark Surface Buttons",
+    description:
+      "The on-dark Button pair for use on dark / coloured surfaces ONLY (e.g. the blue ActionDeck / Card): on-dark (solid white, dark text) as the primary, and on-dark-secondary (translucent outline, white text) as the secondary. They have a white focus ring. Do not use on light backgrounds — use primary / secondary there.",
+    preview: (
+      <div className="flex w-full max-w-[360px] items-center gap-3 rounded-2xl bg-[linear-gradient(103deg,#1d4ed8_0%,#5e8ef6_100%)] p-4">
+        <Button variant="on-dark-secondary" size="lg" className="flex-1">
+          View Pending List
+        </Button>
+        <Button variant="on-dark" size="lg" className="flex-1">
+          Continue
+        </Button>
+      </div>
+    ),
+    code: `import { Button } from "@/components/ui/button";
+
+{/* On a dark / coloured surface ONLY */}
+<Button variant="on-dark-secondary" size="lg">View Pending List</Button>
+<Button variant="on-dark" size="lg">Continue</Button>`,
+  },
+  {
     slug: "switch",
     name: "Switch",
     description: "Segmented toggle with a gradient active pill.",

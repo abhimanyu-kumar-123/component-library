@@ -70,7 +70,8 @@ import { ThumbsUp } from "lucide-react";
 <Button disabled>Disabled</Button>
 <Button render={<a href="/x" />}>As link</Button> // polymorphic via Base UI render prop
 ```
-- `variant`: `primary` (indigo gradient, teal inner stroke) · `secondary` (glass white, dark text) · `ghost` (transparent, brand-blue text, link-style) · `destructive` (solid `danger` red, white text/icon — mirrors primary) · `destructive-secondary` (white glass, red text + red icon — mirrors secondary). Destructive variants support every `size` + with/without icon, like the others. Figma node `4803:8461`.
+- `variant`: `primary` (indigo gradient, teal inner stroke) · `secondary` (glass white, dark text) · `ghost` (transparent, brand-blue text, link-style) · `destructive` (solid `danger` red, white text/icon — mirrors primary) · `destructive-secondary` (white glass, red text + red icon — mirrors secondary) · `on-dark` (solid white, dark text) · `on-dark-secondary` (translucent outline, white text). Destructive variants support every `size` + with/without icon, like the others. Figma node `4803:8461`.
+- **Rule — `on-dark` / `on-dark-secondary` are for DARK / coloured surfaces ONLY** (e.g. the blue `ActionDeck` / `Card`): `on-dark` is the primary (solid white), `on-dark-secondary` the secondary (translucent outline), both with a white focus ring. Never use them on light backgrounds — use `primary` / `secondary` there.
 - `size`: `lg` · `md` (default) · `sm` · `icon-lg` · `icon-md` · `icon-sm`
 - **Rule:** the `ghost` variant always renders at `lg` size — any `size` prop passed to a ghost button is ignored.
 - States (default / hover / disabled) are handled with Tailwind state variants — no `state` prop needed.
