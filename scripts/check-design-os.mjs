@@ -28,7 +28,7 @@ const slugsIn = (rel) =>
   );
 
 const components = readdirSync(uiDir)
-  .filter((f) => f.endsWith(".tsx"))
+  .filter((f) => f.endsWith(".tsx") && !f.endsWith(".figma.tsx")) // skip Code Connect files
   .map((f) => f.replace(/\.tsx$/, ""))
   .filter((s) => !ALLOWLIST.has(s));
 

@@ -10,7 +10,9 @@
     "lint": "eslint",
     "check:design-os": "node scripts/check-design-os.mjs",
     "check:tokens": "node scripts/check-tokens.mjs",
-    "check": "npm run check:design-os && npm run check:tokens"
+    "check": "npm run check:design-os && npm run check:tokens",
+    "figma:connect": "figma connect publish",
+    "figma:connect:dry": "figma connect publish --dry-run"
   },
   "dependencies": {
     "@base-ui-components/react": "^1.0.0-rc.0",
@@ -24,6 +26,7 @@
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
+    "@figma/code-connect": "^1.4.8",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
