@@ -31,6 +31,17 @@ any screen or UI, follow this pipeline:
    When you add or change a component, **update its entry in `design-os.ts`** so the
    intelligence stays in sync with reality.
 
+   **Single source of truth & guardrails.** `src/lib/design-os.ts` is the **canonical**
+   manifest; `AGENTS.md` (this file) and the gallery `REGISTRY` in `src/app/page.tsx`
+   are views of it and must not contradict it. Two checks enforce this:
+   - `npm run check:design-os` — **blocking**, runs automatically on `prebuild`. Every
+     `src/components/ui/*.tsx` must have a matching `slug` in **both** `design-os.ts`
+     (`COMPONENTS`) and the gallery `REGISTRY`. Add a component → register it in both.
+   - `npm run check:tokens` — **report-only** (for now). Flags raw `#hex` and arbitrary
+     `shadow-[…]` that bypass the token system; promote them to a token / named shadow
+     utility, or allow-list intentional one-offs in `scripts/check-tokens.mjs`.
+   - `npm run check` runs both.
+
 ## Conventions
 - Components live in `src/components/ui/` and follow the **shadcn "base" pattern**
   (Base UI `useRender` + `cva` variants). Style: `base` (see `components.json`).

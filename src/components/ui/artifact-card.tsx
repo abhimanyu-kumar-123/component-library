@@ -291,7 +291,7 @@ function ArtifactCard({
       type="button"
       onClick={onClick}
       className={cn(
-        "group flex w-full flex-col gap-2.5 rounded-2xl bg-white p-2.5 text-left outline-none transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0px_14px_28px_rgba(0,0,0,0.08)] focus-visible:ring-2 focus-visible:ring-brand-primary/40",
+        "group flex w-full flex-col gap-2.5 rounded-2xl bg-white p-2.5 text-left outline-none transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-lift focus-visible:ring-2 focus-visible:ring-brand-primary/40",
         className
       )}
     >

@@ -38,7 +38,7 @@ function Card({ variant = "blue", className, ...props }: CardProps) {
         className={cn(
           variant === "white"
             ? "flex w-full items-start gap-2 rounded-2xl bg-white px-3 pb-4 pt-3 text-text-primary"
-            : "relative isolate flex min-h-[168px] w-full flex-col justify-center gap-3 overflow-hidden rounded-2xl bg-[linear-gradient(103deg,#1d4ed8_0%,#5e8ef6_100%)] p-4 text-white shadow-[inset_0px_1px_1px_0px_rgba(255,255,255,0.5)]",
+            : "relative isolate flex min-h-[168px] w-full flex-col justify-center gap-3 overflow-hidden rounded-2xl bg-[linear-gradient(103deg,#1d4ed8_0%,#5e8ef6_100%)] p-4 text-white shadow-inset-glass",
           className
         )}
         {...props}

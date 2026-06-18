@@ -11,9 +11,9 @@ const blueCardBackgroundVariants = cva(
       layer: {
         back: "bg-[linear-gradient(103deg,#0b1440_0%,#20307c_100%)]",
         middle:
-          "bg-[linear-gradient(103deg,#2342b8_0%,#4d72ec_100%)] shadow-[inset_0px_1px_1px_0px_rgba(255,255,255,0.5)]",
+          "bg-[linear-gradient(103deg,#2342b8_0%,#4d72ec_100%)] shadow-inset-glass",
         front:
-          "bg-[linear-gradient(103deg,#1d4ed8_0%,#5e8ef6_100%)] shadow-[inset_0px_1px_1px_0px_rgba(255,255,255,0.5)]",
+          "bg-[linear-gradient(103deg,#1d4ed8_0%,#5e8ef6_100%)] shadow-inset-glass",
       },
     },
     defaultVariants: {

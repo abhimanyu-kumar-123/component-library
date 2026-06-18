@@ -42,6 +42,7 @@ import { SectionTitle } from "@/components/ui/section-title";
 import { TextField, SelectField } from "@/components/ui/text-field";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { ArtifactCard } from "@/components/ui/artifact-card";
+import { ActionDeck } from "@/components/ui/action-deck";
 import { ReportChip } from "@/components/ui/report-chip";
 import { UserThumbnail } from "@/components/ui/user-thumbnail";
 import { BottomNav } from "@/components/ui/bottom-nav";
@@ -549,6 +550,36 @@ function PillDemo() {
   );
 }
 
+function ActionDeckDemo() {
+  return (
+    <div className="w-full max-w-[360px]">
+      <ActionDeck
+        cards={[
+          {
+            icon: <Globe weight="bold" />,
+            title: "Domain setup needed",
+            desc: "Confirm devikatextile.in at ₹412 to take your store live.",
+            time: "3 days ago",
+          },
+          {
+            icon: <ChartBar weight="bold" />,
+            title: "Ad budget nearly exhausted",
+            desc: "Meta spend is at 92% of today's cap — approve a top-up.",
+            time: "Today",
+          },
+          {
+            icon: <Warning weight="bold" />,
+            title: "Pickups delayed in 2 zones",
+            desc: "Confirm the backup courier to keep dispatch on track.",
+            time: "1 day ago",
+          },
+        ]}
+        viewLabel="View Pending List"
+      />
+    </div>
+  );
+}
+
 function ArtifactCardDemo() {
   return (
     <div className="grid w-full max-w-[360px] grid-cols-2 gap-3">
@@ -1047,6 +1078,24 @@ const [active, setActive] = useState("Action Needed");
   time="10 min ago"
   status="action-needed"    // ongoing | action-needed | completed
   onClick={() => openPreviewSheet()}
+/>`,
+  },
+  {
+    slug: "action-deck",
+    name: "Action Deck",
+    description:
+      "A rotating 'wheel' of stacked blue notification cards (the Action Needed deck). Tap a back card, swipe vertically (mobile), or scroll (desktop) to rotate forward; back cards peek out + darken with depth. Used on /home and /onboarding. Pass viewLabel to show a secondary 'View' CTA alongside Continue.",
+    preview: <ActionDeckDemo />,
+    code: `import { ActionDeck } from "@/components/ui/action-deck";
+
+<ActionDeck
+  cards={[
+    { icon: <Globe />, title: "Domain setup needed", desc: "…", time: "3 days ago" },
+    { icon: <ChartBar />, title: "Ad budget low", desc: "…", time: "Today" },
+  ]}
+  viewLabel="View Pending List"   // optional — omit to show only Continue
+  onContinue={(i) => …}
+  onView={(i) => …}
 />`,
   },
   {

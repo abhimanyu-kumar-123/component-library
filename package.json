@@ -4,9 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev -H 0.0.0.0",
+    "prebuild": "node scripts/check-design-os.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check:design-os": "node scripts/check-design-os.mjs",
+    "check:tokens": "node scripts/check-tokens.mjs",
+    "check": "npm run check:design-os && npm run check:tokens"
   },
   "dependencies": {
     "@base-ui-components/react": "^1.0.0-rc.0",

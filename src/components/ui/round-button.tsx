@@ -21,7 +21,7 @@ const roundButtonVariants = cva(
       },
       selected: {
         false:
-          "border-white bg-white/50 text-text-primary shadow-[0px_10px_20px_rgba(0,0,0,0.1)] hover:bg-white hover:shadow-[0px_10px_10px_rgba(0,0,0,0.1)]",
+          "border-white bg-white/50 text-text-primary shadow-glass hover:bg-white hover:shadow-[0px_10px_10px_rgba(0,0,0,0.1)]",
         true: "rounded-full border-transparent bg-[linear-gradient(93deg,#5b7df4_1%,#4066f1_99%)] text-white shadow-[0px_5px_5px_rgba(0,0,0,0.1),inset_0px_0px_1px_0px_var(--accent-teal)]",
       },
     },

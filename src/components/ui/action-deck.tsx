@@ -116,7 +116,7 @@ function ActionDeck({
               cursor: isFront ? "default" : "pointer",
             }}
           >
-            <div className="relative isolate flex min-h-[168px] flex-col justify-center gap-3 overflow-hidden rounded-2xl bg-[linear-gradient(103deg,#1d4ed8_0%,#5e8ef6_100%)] p-4 text-white shadow-[inset_0px_1px_1px_0px_rgba(255,255,255,0.5)]">
+            <div className="relative isolate flex min-h-[168px] flex-col justify-center gap-3 overflow-hidden rounded-2xl bg-[linear-gradient(103deg,#1d4ed8_0%,#5e8ef6_100%)] p-4 text-white shadow-inset-glass">
               {/* depth scrim — darker as the card goes back */}
               <div
                 className="pointer-events-none absolute inset-0 bg-[#0b1440] transition-opacity duration-500"

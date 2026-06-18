@@ -76,7 +76,7 @@ function BottomSheet({
           4px from the top (full page), after which the body scrolls. */}
       <div
         className={cn(
-          "absolute inset-x-1 bottom-1 z-10 flex max-h-[calc(100%-8px)] flex-col overflow-hidden rounded-[20px] border border-white bg-surface-muted shadow-[0px_0px_70px_rgba(0,0,0,0.1)] motion-safe:animate-sheet-up",
+          "absolute inset-x-1 bottom-1 z-10 flex max-h-[calc(100%-8px)] flex-col overflow-hidden rounded-[20px] border border-white bg-surface-muted shadow-sheet motion-safe:animate-sheet-up",
           className
         )}
       >

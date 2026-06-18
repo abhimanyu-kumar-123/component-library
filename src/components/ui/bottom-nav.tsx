@@ -73,7 +73,7 @@ function BottomNav({
             onPointerDown={(e) => {
               if (e.pointerType === "touch") triggerHaptic();
             }}
-            className="flex h-10 flex-1 items-center gap-2 overflow-hidden rounded-full border border-white bg-white/50 px-2.5 text-left shadow-[0px_10px_20px_rgba(0,0,0,0.1)] outline-none transition-[background] hover:bg-white focus-visible:bg-white active:bg-white"
+            className="flex h-10 flex-1 items-center gap-2 overflow-hidden rounded-full border border-white bg-white/50 px-2.5 text-left shadow-glass outline-none transition-[background] hover:bg-white focus-visible:bg-white active:bg-white"
           >
             <span className="flex size-5 shrink-0 items-center justify-center [&_svg]:size-5">
               {leadingIcon ?? <AiBadge />}
@@ -87,7 +87,7 @@ function BottomNav({
             onPointerDown={(e) => {
               if (e.pointerType === "touch") triggerHaptic();
             }}
-            className="flex h-10 flex-1 items-center gap-2 overflow-hidden rounded-full border border-white bg-white/50 px-2.5 shadow-[0px_10px_20px_rgba(0,0,0,0.1)] transition-[background] hover:bg-white focus-within:bg-white"
+            className="flex h-10 flex-1 items-center gap-2 overflow-hidden rounded-full border border-white bg-white/50 px-2.5 shadow-glass transition-[background] hover:bg-white focus-within:bg-white"
           >
             <span className="flex size-5 shrink-0 items-center justify-center [&_svg]:size-5">
               {leadingIcon ?? <AiBadge />}
