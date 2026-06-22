@@ -115,7 +115,7 @@ export default function MenuScreen() {
   const [editId, setEditId] = React.useState<string | null>(null);
   // form
   const [name, setName] = React.useState("");
-  const [mode, setMode] = React.useState<"submenu" | "url" | "collection">("submenu");
+  const [mode, setMode] = React.useState<"submenu" | "url" | "collection" | null>(null);
   const [subName, setSubName] = React.useState("");
   const [url, setUrl] = React.useState("");
   const [collection, setCollection] = React.useState<string | null>(null);
@@ -126,7 +126,7 @@ export default function MenuScreen() {
     setLevel(lvl);
     setEditId(null);
     setName("");
-    setMode(lvl >= 3 ? "url" : "submenu");
+    setMode(null);
     setSubName("");
     setUrl("");
     setCollection(null);
@@ -146,6 +146,7 @@ export default function MenuScreen() {
   }
 
   function save() {
+    if (!mode) return;
     if (editId) {
       setRoot((r) => update(r, editId, { name: name.trim() || "Untitled", kind: mode }));
       if (mode === "submenu" && subName.trim()) {
@@ -231,7 +232,7 @@ export default function MenuScreen() {
               variant="primary"
               size="lg"
               className="w-full"
-              disabled={!name.trim()}
+              disabled={!name.trim() || !mode}
               onClick={save}
             >
               Save
