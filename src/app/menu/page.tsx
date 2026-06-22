@@ -213,8 +213,8 @@ export default function MenuScreen() {
               </React.Fragment>
             ))}
             {/* footer note — white box */}
-            <div className="mt-1 flex items-start gap-2 rounded-lg bg-white px-3 py-3">
-              <Info weight="regular" className="mt-0.5 size-4 shrink-0 text-text-secondary" />
+            <div className="mt-1 flex items-center gap-2 rounded-lg bg-white px-3 py-3">
+              <Info weight="regular" className="size-4 shrink-0 text-text-secondary" />
               <span className="type-body-2 text-text-secondary">
                 Add / edit menu — you can change it later.
               </span>
