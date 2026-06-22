@@ -401,12 +401,12 @@ function MenuRow({
           {item.name}
         </span>
         {editable && (
-          <div className="flex shrink-0 items-center gap-2">
+          <div className="flex shrink-0 items-center gap-5">
             <button
               type="button"
               aria-label="Edit"
               onClick={() => onEdit(item, level)}
-              className="text-brand-primary outline-none transition-opacity active:opacity-60 [&_svg]:size-4"
+              className="grid size-5 place-items-center text-brand-primary outline-none transition-opacity active:opacity-60 [&_svg]:size-4"
             >
               <PencilSimple weight="regular" />
             </button>
@@ -414,7 +414,7 @@ function MenuRow({
               type="button"
               aria-label="Delete"
               onClick={() => onDelete(item.id)}
-              className="text-danger outline-none transition-opacity active:opacity-60 [&_svg]:size-4"
+              className="grid size-5 place-items-center text-danger outline-none transition-opacity active:opacity-60 [&_svg]:size-4"
             >
               <Trash weight="regular" />
             </button>
