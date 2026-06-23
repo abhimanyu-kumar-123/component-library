@@ -33,6 +33,7 @@ import { DataCard } from "@/components/ui/data-card";
 import { CollapsibleCard } from "@/components/ui/collapsible-card";
 import { ListCard, ListCardButton } from "@/components/ui/list-card";
 import { ShopdeckLogo } from "@/components/brand-logos";
+import { GoogleEmptyState } from "@/components/google-empty-state";
 
 const AVATAR = "https://i.pravatar.cc/120?img=47";
 
@@ -101,7 +102,7 @@ export default function MarketingLiveScreen() {
           {/* Performance — marketing in progress, metrics pending */}
           <section className="space-y-3">
             {/* Marketing-in-progress banner */}
-            <div className="flex items-center gap-3 rounded-2xl border border-white bg-white p-3 shadow-card">
+            <div className="flex items-center gap-3 rounded-2xl border border-white bg-white p-3">
               <span className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-full bg-surface-app text-brand-primary">
                 <RadarLoader />
               </span>
@@ -136,23 +137,33 @@ export default function MarketingLiveScreen() {
               />
             </div>
 
-            {/* metrics — placeholders until data arrives */}
-            <div className="space-y-2">
-              <div className="grid grid-cols-2 gap-2">
-                <DataCard type="single" metrics={[{ label: "Orders placed", value: "--" }]} />
-                <DataCard type="single" metrics={[{ label: "Revenue", value: "--" }]} />
+            {/* metrics — placeholders until data arrives. Google overlays the
+                empty state; metrics keep the height so the section never jumps. */}
+            <div className="relative">
+              <div
+                className={cn("space-y-2", metric === "google" && "invisible")}
+                aria-hidden={metric === "google"}
+              >
+                <div className="grid grid-cols-2 gap-2">
+                  <DataCard type="single" metrics={[{ label: "Orders placed", value: "--" }]} />
+                  <DataCard type="single" metrics={[{ label: "Revenue", value: "--" }]} />
+                </div>
+                <DataCard
+                  type="double"
+                  metrics={[
+                    { label: "Normal spends", value: "₹700L", cap: "/ ₹1k", progress: { pct: 60 } },
+                    { label: "CPP/ROAS spends", value: "₹500", cap: "/ ₹1k", progress: { pct: 25, tone: "green" } },
+                  ]}
+                />
+                <div className="grid grid-cols-2 gap-2">
+                  <DataCard type="single" metrics={[{ label: "Visitors", value: "--" }]} />
+                  <DataCard type="single" metrics={[{ label: "CPO", value: "--" }]} />
+                </div>
               </div>
-              <DataCard
-                type="double"
-                metrics={[
-                  { label: "Normal spends", value: "₹700L", cap: "/ ₹1k", progress: { pct: 60 } },
-                  { label: "CPP/ROAS spends", value: "₹500", cap: "/ ₹1k", progress: { pct: 25, tone: "green" } },
-                ]}
-              />
-              <div className="grid grid-cols-2 gap-2">
-                <DataCard type="single" metrics={[{ label: "Visitors", value: "--" }]} />
-                <DataCard type="single" metrics={[{ label: "CPO", value: "--" }]} />
-              </div>
+
+              {metric === "google" && (
+                <GoogleEmptyState onCta={toChat} className="absolute inset-0" />
+              )}
             </div>
           </section>
 
@@ -191,6 +202,10 @@ export default function MarketingLiveScreen() {
               onValueChange={setWeeklyChannel}
             />
 
+            {weeklyChannel === "google" ? (
+              <GoogleEmptyState onCta={toChat} />
+            ) : (
+              <>
             {/* Problem identified */}
             <div className="flex flex-col gap-3 rounded-2xl border border-surface-muted bg-white p-3">
               <div className="flex items-center justify-between">
@@ -248,6 +263,8 @@ export default function MarketingLiveScreen() {
                 actions={<ListCardButton variant="primary">Got it</ListCardButton>}
               />
             </CollapsibleCard>
+              </>
+            )}
           </section>
 
           {/* Keep Growing */}
