@@ -150,7 +150,7 @@ export default function AfterLiveScreen() {
           {/* Learn the basics */}
           <section className="space-y-3">
             <h2 className="type-h1 text-text-primary">Learn the basics</h2>
-            <div className="-mx-4 flex gap-4 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="-mx-4 flex gap-4 overflow-x-auto px-4 py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {BASICS.map((b) => (
                 <button
                   key={b.label}
