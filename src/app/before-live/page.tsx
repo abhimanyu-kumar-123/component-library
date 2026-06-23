@@ -70,7 +70,9 @@ function JourneyTimeline({ onStep }: { onStep: () => void }) {
               {!isLast && (
                 <span
                   className={cn(
-                    "absolute left-1/2 top-[34px] -bottom-[26px] -translate-x-1/2",
+                    "absolute left-1/2 -bottom-7 -translate-x-1/2",
+                    // start below the upper node — bigger offset for the taller ring/target
+                    s.node === "filled" ? "top-9" : "top-[42px]",
                     nextFilled
                       ? "w-0.5 rounded-full bg-brand-primary"
                       : "w-0 border-l-2 border-dotted border-brand-primary/50"
