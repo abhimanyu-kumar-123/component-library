@@ -70,7 +70,7 @@ function JourneyTimeline({ onStep }: { onStep: () => void }) {
               {!isLast && (
                 <span
                   className={cn(
-                    "absolute -bottom-8 left-1/2 top-7 -translate-x-1/2",
+                    "absolute left-1/2 top-[34px] -bottom-[26px] -translate-x-1/2",
                     nextFilled
                       ? "w-0.5 rounded-full bg-brand-primary"
                       : "w-0 border-l-2 border-dotted border-brand-primary/50"
