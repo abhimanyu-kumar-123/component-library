@@ -41,6 +41,13 @@
   --accent-purple: #673ab7; /* promo callout text (e.g. Early Launch Alert) */
   --accent-purple-light: #f6f2ff; /* promo callout surface */
 
+  /* Vivid icon accents — coloured marks on dark circles (Learn the basics) */
+  --icon-gold: #ffc53d;
+  --icon-pink: #ff5ca8;
+  --icon-green: #2fd9a0;
+  --icon-blue: #3ba8ff;
+  --icon-rose: #ff6f91;
+
   /* Button · primary gradient */
   --primary-from: #5b7df4;
   --primary-to: #4066f1;
@@ -50,6 +57,7 @@
   --gradient-grey-dark: linear-gradient(to right, #1d2025 0%, #3c3f45 100%);
   --gradient-grey-light: linear-gradient(98deg, #e8ebf9 0%, #f8f9ff 100%);
   --gradient-ice: linear-gradient(-57deg, #f6fcff 0%, #d9f4ff 100%);
+  --gradient-strategy: linear-gradient(98deg, #0f2a8c 0%, #5b7df4 100%); /* marketing-strategy card */
 
   /* ── Elevation tokens — never invent shadows, use these ───────────── */
   --shadow-glass: 0px 10px 20px rgba(0, 0, 0, 0.1); /* glass pills / buttons */
@@ -87,6 +95,11 @@
   --color-accent-violet-light: var(--accent-violet-light);
   --color-accent-purple: var(--accent-purple);
   --color-accent-purple-light: var(--accent-purple-light);
+  --color-icon-gold: var(--icon-gold);
+  --color-icon-pink: var(--icon-pink);
+  --color-icon-green: var(--icon-green);
+  --color-icon-blue: var(--icon-blue);
+  --color-icon-rose: var(--icon-rose);
   --color-primary-from: var(--primary-from);
   --color-primary-to: var(--primary-to);
 
@@ -190,6 +203,9 @@
 }
 @utility bg-gradient-grey-light {
   background-image: var(--gradient-grey-light);
+}
+@utility bg-gradient-strategy {
+  background-image: var(--gradient-strategy);
 }
 @utility bg-gradient-ice {
   background-image: var(--gradient-ice);
