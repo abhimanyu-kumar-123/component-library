@@ -20,34 +20,79 @@ import { BottomSheet } from "@/components/ui/bottom-sheet";
 const AVATAR = "https://i.pravatar.cc/120?img=47";
 const POC_AVATAR = "https://i.pravatar.cc/120?img=12";
 
-const JOURNEY = ["Documents", "Catalog", "Website", "Marketing", "Launch"];
+/* Go-live journey — early steps done (filled dots + solid rail), then the
+   recent/active region uses hollow ring nodes + a dotted rail, ending on the
+   ongoing Launch target. Figma node 5321:10123. */
+type JourneyStep = {
+  label: string;
+  date: string;
+  status: "done" | "ongoing";
+  node: "filled" | "ring" | "target";
+};
+
+const JOURNEY: JourneyStep[] = [
+  { label: "Documents", date: "Jun 15", status: "done", node: "filled" },
+  { label: "Catalog", date: "Jun 15", status: "done", node: "filled" },
+  { label: "Website", date: "Jun 15", status: "done", node: "filled" },
+  { label: "Marketing", date: "Jun 15", status: "done", node: "ring" },
+  { label: "Launch", date: "Jun 15", status: "ongoing", node: "target" },
+];
+
 const ISSUES = ["POC", "Service Speed", "Website Quality", "Other"];
 
-/* All steps complete now that the store is live. */
+function JourneyNode({ node }: { node: JourneyStep["node"] }) {
+  if (node === "filled")
+    return <span className="block size-2 rounded-full bg-brand-primary" />;
+  if (node === "target")
+    return (
+      <span className="grid size-3.5 place-items-center rounded-full border-[1.5px] border-brand-primary bg-white">
+        <span className="block size-1.5 rounded-full bg-brand-primary" />
+      </span>
+    );
+  // ring
+  return (
+    <span className="block size-3.5 rounded-full border-[1.5px] border-brand-primary bg-white" />
+  );
+}
+
 function JourneyTimeline({ onStep }: { onStep: () => void }) {
   return (
     <div className="flex flex-col">
-      {JOURNEY.map((label, i) => {
+      {JOURNEY.map((s, i) => {
         const isLast = i === JOURNEY.length - 1;
+        // Rail into the NEXT node is solid only between filled (done) dots.
+        const nextFilled = !isLast && JOURNEY[i + 1].node === "filled";
         return (
-          <div key={label} className="relative flex items-start gap-3 pb-2 last:pb-0">
-            {!isLast && (
-              <span className="absolute bottom-0 left-1 top-7 w-0.5 -translate-x-1/2 rounded-full bg-brand-primary" />
-            )}
-            <span className="relative z-10 mt-6 shrink-0">
-              <span className="block size-2 rounded-full bg-brand-primary" />
-            </span>
+          <div key={s.label} className="relative flex items-start gap-3 pb-2 last:pb-0">
+            {/* node column — fixed width so the rail stays centered across node
+                sizes; self-stretch so the rail spans the full row into the next node */}
+            <div className="relative flex w-3.5 shrink-0 justify-center self-stretch">
+              {!isLast && (
+                <span
+                  className={cn(
+                    "absolute bottom-0 left-1/2 top-7 -translate-x-1/2",
+                    nextFilled
+                      ? "w-0.5 rounded-full bg-brand-primary"
+                      : "w-0 border-l-2 border-dotted border-brand-primary/50"
+                  )}
+                />
+              )}
+              <span className="relative z-10 mt-6">
+                <JourneyNode node={s.node} />
+              </span>
+            </div>
+
             <button
               type="button"
               onClick={onStep}
-              className="flex flex-1 items-center justify-between gap-2 rounded-2xl border border-border-divider bg-white p-3 text-left outline-none transition-colors active:bg-surface-muted"
+              className="flex flex-1 items-center justify-between gap-2 rounded-xl bg-white p-3 text-left outline-none transition-colors active:bg-surface-muted"
             >
               <span className="flex min-w-0 flex-col gap-1">
-                <span className="type-caption text-text-secondary">Jun 15</span>
+                <span className="type-caption text-text-secondary">{s.date}</span>
                 <span className="flex flex-wrap items-center gap-2">
-                  <span className="type-h2 text-text-primary">{label}</span>
-                  <Pill tone="success" background>
-                    Completed
+                  <span className="type-h2 font-medium text-text-primary">{s.label}</span>
+                  <Pill tone={s.status === "done" ? "success" : "neutral"} background>
+                    {s.status === "done" ? "Completed" : "Ongoing"}
                   </Pill>
                 </span>
               </span>
