@@ -57,7 +57,7 @@ function Switch({
       role="tablist"
       data-slot="switch"
       className={cn(
-        "inline-flex h-9 items-center rounded-[20px] border border-white bg-white/50 p-px shadow-glass transition-[background,box-shadow] hover:bg-white hover:shadow-[0px_10px_10px_rgba(0,0,0,0.1)] has-[button:active]:bg-white has-[button:active]:shadow-[0px_10px_10px_rgba(0,0,0,0.1)]",
+        "inline-flex h-9 items-center rounded-[20px] border border-white bg-white/50 p-px shadow-[0px_4px_8px_rgba(0,0,0,0.04)] transition-[background,box-shadow] hover:bg-white hover:shadow-[0px_4px_4px_rgba(0,0,0,0.04)] has-[button:active]:bg-white has-[button:active]:shadow-[0px_4px_4px_rgba(0,0,0,0.04)]",
         className
       )}
       {...props}
