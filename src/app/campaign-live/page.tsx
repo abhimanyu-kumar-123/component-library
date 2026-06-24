@@ -2,14 +2,20 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Check, ListChecks } from "@phosphor-icons/react";
+import dynamic from "next/dynamic";
+import { CaretRight, ListChecks } from "@phosphor-icons/react";
 
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/ui/header";
 import { SectionCard } from "@/components/ui/section-card";
 import { UserThumbnail } from "@/components/ui/user-thumbnail";
 import { BottomNav } from "@/components/ui/bottom-nav";
-import { CaretRight } from "@phosphor-icons/react";
+
+const RadarLoader = dynamic(
+  () => import("@/components/radar-loader").then((m) => m.RadarLoader),
+  { ssr: false }
+);
 
 const AVATAR = "https://i.pravatar.cc/120?img=47";
 const POC_AVATAR = "https://i.pravatar.cc/120?img=12";
@@ -63,6 +69,15 @@ export default function CampaignLiveScreen() {
   const router = useRouter();
   const toChat = React.useCallback(() => router.push("/chat"), [router]);
 
+  /* If we arrived via the card-swap transition, use a soft fade instead of
+     the full slide-up so the white card appears to have stayed in place. */
+  const [fromCardTransition] = React.useState(() => {
+    if (typeof window === "undefined") return false;
+    const flag = sessionStorage.getItem("card-transition") === "1";
+    if (flag) sessionStorage.removeItem("card-transition");
+    return flag;
+  });
+
   React.useEffect(() => {
     const noop = () => {};
     document.addEventListener("touchstart", noop, { passive: true });
@@ -71,7 +86,12 @@ export default function CampaignLiveScreen() {
 
   return (
     <div className="bg-surface-app sm:flex sm:min-h-screen sm:items-center sm:justify-center sm:bg-neutral-200 sm:p-6">
-      <div className="relative flex h-[100dvh] w-full flex-col overflow-hidden bg-surface-app motion-safe:animate-screen-in sm:h-[852px] sm:w-[393px] sm:rounded-[44px] sm:shadow-2xl">
+      <div className={cn(
+          "relative flex h-[100dvh] w-full flex-col overflow-hidden bg-surface-app sm:h-[852px] sm:w-[393px] sm:rounded-[44px] sm:shadow-2xl",
+          fromCardTransition
+            ? "motion-safe:animate-[fade-in_0.22s_ease_both]"
+            : "motion-safe:animate-screen-in"
+        )}>
         {/* Header */}
         <div className="shrink-0 bg-surface-app pt-[env(safe-area-inset-top)]">
           <Header
@@ -109,38 +129,31 @@ export default function CampaignLiveScreen() {
             <CaretRight weight="bold" className="size-4 shrink-0 text-text-secondary" />
           </button>
 
-          {/* Campaign live card — replaces the blue marketing strategy card */}
-          <div className="flex flex-col items-center gap-4 rounded-2xl bg-white p-5 text-center">
-            {/* Icon circle */}
-            <span className="grid size-[70px] place-items-center rounded-full bg-gradient-primary [&_svg]:size-8">
-              <Check weight="bold" className="text-white" />
+          {/* Campaign live card — matches transition card height exactly (264px) */}
+          <div className="flex min-h-[264px] flex-col items-center justify-between rounded-2xl bg-white p-4 text-center">
+            <span className="grid size-14 shrink-0 overflow-hidden rounded-full bg-surface-app">
+              <RadarLoader />
             </span>
-
-            {/* Heading */}
-            <div className="flex flex-col gap-1">
-              <h2 className="type-h1 text-text-primary">
-                Congratulations! Your 1st campaign is live
-              </h2>
-            </div>
-
-            {/* Purple callout box */}
+            <h2 className="type-h1 text-text-primary">
+              Congratulations! Your 1st campaign is live
+            </h2>
             <div className="w-full rounded-xl bg-accent-purple-light px-4 py-3">
               <p className="type-body-1 text-accent-purple text-center">
                 We&apos;ll run it for a week, gather insights, and share what we learn — so
                 the next campaign is even stronger. Watch this space.
               </p>
             </div>
-
-            {/* CTA → marketing-live */}
-            <Button
-              variant="primary"
-              size="lg"
-              className="w-full"
-              onClick={() => router.push("/marketing-live")}
-            >
-              Ok, Notify Me
-            </Button>
           </div>
+
+          {/* Ok, Notify Me — standalone button below card */}
+          <Button
+            variant="primary"
+            size="lg"
+            className="w-full"
+            onClick={() => router.push("/marketing-live")}
+          >
+            Ok, Notify Me
+          </Button>
 
           {/* Learn the basics */}
           <section className="space-y-3">

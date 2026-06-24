@@ -93,6 +93,9 @@
 
   /* Screen enter motion (e.g. opening the chat screen) */
   --animate-screen-in: screen-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  /* Card swap — blue → white in-place card transition */
+  --animate-card-swap-out: card-swap-out 0.18s ease-in forwards;
+  --animate-card-swap-in: card-swap-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   /* Story progress bar fill (WhatsApp-style) */
   --animate-story-fill: story-fill 5s linear forwards;
   /* Bottom sheet: scrim fade + sheet slide-up */
@@ -260,6 +263,18 @@
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+
+/* Card swap — blue card exits */
+@keyframes card-swap-out {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.96); }
+}
+
+/* Card swap — white card enters */
+@keyframes card-swap-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
 @keyframes story-fill {

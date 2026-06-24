@@ -2,11 +2,17 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import { CaretRight, ListChecks, Megaphone } from "@phosphor-icons/react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/ui/header";
+
+const RadarLoader = dynamic(
+  () => import("@/components/radar-loader").then((m) => m.RadarLoader),
+  { ssr: false }
+);
 import { SectionCard } from "@/components/ui/section-card";
 import { UserThumbnail } from "@/components/ui/user-thumbnail";
 import { BottomNav } from "@/components/ui/bottom-nav";
@@ -136,6 +142,8 @@ export default function AfterLiveScreen() {
   /* Review Strategy multi-step sheet */
   const [reviewOpen, setReviewOpen] = React.useState(false);
   const [reviewStep, setReviewStep] = React.useState<1 | 2 | 3>(1);
+  /* Card swap state: 'strategy' → 'exiting' → 'congrats' */
+  const [cardState, setCardState] = React.useState<"strategy" | "exiting" | "congrats">("strategy");
 
   // Step 1 — Who buys from you?
   const [buyer, setBuyer] = React.useState("woman");
@@ -156,9 +164,22 @@ export default function AfterLiveScreen() {
     if (reviewStep < 3) {
       setReviewStep((s) => (s + 1) as 2 | 3);
     } else {
+      // 1. Close sheet
       setReviewOpen(false);
       setReviewStep(1);
-      router.push("/campaign-live");
+      // 2. After sheet exits, scroll to top so card is in view, then swap
+      setTimeout(() => {
+        document.querySelector("main")?.scrollTo({ top: 0 });
+        setCardState("exiting"); // blue card plays card-swap-out (180ms)
+        setTimeout(() => {
+          setCardState("congrats"); // white card plays card-swap-in (280ms)
+          // 3. Signal campaign-live to skip its screen-in (card already visible)
+          if (typeof window !== "undefined") {
+            sessionStorage.setItem("card-transition", "1");
+          }
+          setTimeout(() => router.push("/campaign-live"), 320);
+        }, 180);
+      }, 380);
     }
   };
 
@@ -208,38 +229,70 @@ export default function AfterLiveScreen() {
             <CaretRight weight="bold" className="size-4 shrink-0 text-text-secondary" />
           </button>
 
-          {/* Marketing strategy — blue card */}
-          <div className="flex flex-col gap-3 rounded-2xl bg-gradient-strategy p-3 text-white">
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-1 [&_svg]:size-4">
-                <Megaphone weight="regular" />
-                <span className="type-h2 font-medium text-white">Marketing strategy</span>
-              </div>
-              <p className="type-body-2 text-white/70">
-                Based on previous input we have created your first marketing strategy.
-              </p>
-              <div className="grid grid-cols-2 gap-2">
-                {STRATEGY_STATS.map((s) => (
-                  <div key={s.label} className="flex flex-col rounded-lg bg-white/10 p-3">
-                    <span className="type-caption text-white/60">{s.label}</span>
-                    <span className="text-[13px] font-semibold leading-[18px] text-white">
-                      {s.value}
-                    </span>
+          {/* Card slot — fixed height so neither card causes layout shift.
+              Both cards are absolute inset-0; height is set to the white card's
+              natural size (328px) so the surrounding content never moves. */}
+          {/* Card slot — both cards absolute inset-0 inside a fixed-height
+              container so the surrounding content never shifts. Height matches
+              the blue card's natural compact size (264px). */}
+          <div className="relative min-h-[264px]">
+
+            {/* Blue marketing-strategy card — original compact layout */}
+            {cardState !== "congrats" && (
+              <div className={cn(
+                "absolute inset-0 flex flex-col gap-3 rounded-2xl bg-gradient-strategy p-3 text-white",
+                cardState === "exiting" && "motion-safe:animate-card-swap-out"
+              )}>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-1 [&_svg]:size-4">
+                    <Megaphone weight="regular" />
+                    <span className="type-h2 font-medium text-white">Marketing strategy</span>
                   </div>
-                ))}
+                  <p className="type-body-2 text-white/70">
+                    Based on previous input we have created your first marketing strategy.
+                  </p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {STRATEGY_STATS.map((s) => (
+                      <div key={s.label} className="flex flex-col rounded-lg bg-white/10 p-3">
+                        <span className="type-caption text-white/60">{s.label}</span>
+                        <span className="text-[13px] font-semibold leading-[18px] text-white">
+                          {s.value}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <Button
+                  variant="on-dark"
+                  size="md"
+                  className="w-full"
+                  onClick={() => { setReviewStep(1); setReviewOpen(true); }}
+                >
+                  Review Strategy
+                </Button>
               </div>
-            </div>
-            <Button
-              variant="on-dark"
-              size="md"
-              className="w-full"
-              onClick={() => {
-                setReviewStep(1);
-                setReviewOpen(true);
-              }}
-            >
-              Review Strategy
-            </Button>
+            )}
+
+            {/* White congratulations card — Radar loader, same 264px height */}
+            {cardState !== "strategy" && (
+              <div className={cn(
+                "absolute inset-0 flex flex-col items-center justify-between rounded-2xl bg-white p-4 text-center pointer-events-none",
+                cardState === "congrats" && "motion-safe:animate-card-swap-in"
+              )}>
+                <span className="grid size-14 shrink-0 overflow-hidden rounded-full bg-surface-app">
+                  <RadarLoader />
+                </span>
+                <h2 className="type-h1 text-text-primary">
+                  Congratulations! Your 1st campaign is live
+                </h2>
+                <div className="w-full rounded-xl bg-accent-purple-light px-4 py-3">
+                  <p className="type-body-1 text-accent-purple text-center">
+                    We&apos;ll run it for a week, gather insights, and share what we
+                    learn — so the next campaign is even stronger. Watch this space.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Learn the basics */}
