@@ -287,8 +287,7 @@ export default function AfterLiveScreen() {
                 </h2>
                 <div className="w-full rounded-xl bg-accent-purple-light px-4 py-3">
                   <p className="type-body-1 text-accent-purple text-center">
-                    We&apos;ll run it for a week, gather insights, and share what we
-                    learn — so the next campaign is even stronger. Watch this space.
+                    We&apos;ll run it for a week, gather insights, and share what we learn.
                   </p>
                 </div>
                 <Button variant="primary" size="md" className="w-full" disabled>
