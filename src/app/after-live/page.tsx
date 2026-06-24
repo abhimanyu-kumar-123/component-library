@@ -342,14 +342,18 @@ export default function AfterLiveScreen() {
               setReviewStep(1);
             }
           }}
-          title={STEP_TITLES[reviewStep - 1]}
-          onBack={reviewStep > 1 ? () => setReviewStep((s) => (s - 1) as 1 | 2) : undefined}
+          onBack={
+            reviewStep === 1
+              ? () => { setReviewOpen(false); setReviewStep(1); }
+              : () => setReviewStep((s) => (s - 1) as 1 | 2)
+          }
           primaryLabel={STEP_CTAS[reviewStep - 1]}
           onPrimary={handleReviewPrimary}
         >
           {/* Step 1 — Who buys from you? */}
           {reviewStep === 1 && (
             <div className="flex flex-col gap-4">
+              <h2 className="type-h1 text-text-primary">{STEP_TITLES[0]}</h2>
               <SelectField
                 label="Primary buyer"
                 options={BUYER_OPTIONS}
@@ -404,6 +408,7 @@ export default function AfterLiveScreen() {
           {/* Step 2 — What you want to target */}
           {reviewStep === 2 && (
             <div className="flex flex-col gap-4">
+              <h2 className="type-h1 text-text-primary">{STEP_TITLES[1]}</h2>
               <SelectField
                 label="Hero product"
                 options={PRODUCT_OPTIONS}
@@ -428,6 +433,7 @@ export default function AfterLiveScreen() {
           {/* Step 3 — Proposed creatives */}
           {reviewStep === 3 && (
             <div className="flex flex-col gap-3">
+              <h2 className="type-h1 text-text-primary">{STEP_TITLES[2]}</h2>
               {CREATIVES.map((c) => (
                 <div
                   key={c.title}
