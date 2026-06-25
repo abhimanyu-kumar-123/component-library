@@ -49,9 +49,10 @@ const BASICS = [
 /* What next — go-forward roadmap (same rail pattern as before-live's journey). */
 const STEPS = [
   { step: "STEP 1", title: "Start with your first campaign" },
-  { step: "STEP 2", title: "Find the right product market fit" },
-  { step: "STEP 3", title: "Optimise your reach" },
-  { step: "STEP 4", title: "scale up or reset" },
+  { step: "STEP 2", title: "Spend planned as ₹1,000 daily" },
+  { step: "STEP 3", title: "Find the right product market fit" },
+  { step: "STEP 4", title: "Optimise your reach" },
+  { step: "STEP 5", title: "scale up or reset" },
 ];
 
 /* ── Review Strategy sheet ── */
@@ -241,16 +242,17 @@ export default function AfterLiveScreen() {
           {/* Card slot — both cards absolute inset-0 inside a fixed-height
               container so the surrounding content never shifts. Height matches
               the blue card's natural compact size (264px). */}
+          {/* Container: relative so congrats card (absolute) can overlay.
+              min-h-[490px] only matters during the swap (blue card unmounted). */}
           <div className="relative min-h-[490px]">
 
-            {/* Blue marketing-strategy card — exact port of marketing-strategy.html
-                Outer: no overflow-hidden (carousel must bleed). bg layer clips separately.
-                card-bg: absolute inset-0, overflow-hidden, gradient + texture overlay.
-                card-inner: relative z-1, padding 12px 22px, gap 12px between sections. */}
+            {/* Blue marketing-strategy card — in-flow block so it sizes to
+                its content; p-4 bottom = exactly 16px below the button.
+                Not absolute inset-0 → no wasted blue space at the bottom. */}
             {cardState !== "congrats" && (
               <div
                 className={cn(
-                  "absolute inset-0 rounded-2xl",
+                  "relative w-full rounded-2xl",
                   cardState === "exiting" && "motion-safe:animate-card-swap-out"
                 )}
                 style={{ boxShadow: "0 18px 40px -12px rgba(15,42,140,0.45)" }}
@@ -270,7 +272,7 @@ export default function AfterLiveScreen() {
                 </div>
 
                 {/* Content layer */}
-                <div className="relative z-[1] flex flex-col gap-3 px-[22px] py-3 text-white">
+                <div className="relative z-[1] flex flex-col gap-3 p-4 text-white">
 
                   {/* Header: gap-2 between title row and subtitle */}
                   <div className="flex flex-col gap-2">
@@ -292,14 +294,14 @@ export default function AfterLiveScreen() {
                         width calc(100%+76px) fills the full screen width.
                         scroll-snap proximity snaps cards to the left. */}
                     <div
-                      className="-ml-[38px] w-[calc(100%+76px)] touch-pan-x overflow-x-auto overflow-y-hidden overscroll-x-contain [scroll-padding-left:38px] [scroll-snap-type:x_proximity] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                      className="-ml-[32px] w-[calc(100%+64px)] touch-pan-x overflow-x-auto overflow-y-hidden overscroll-x-contain [scroll-padding-left:32px] [scroll-snap-type:x_proximity] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                     >
-                      <div className="flex w-max gap-2 px-[38px] py-0.5">
+                      <div className="flex w-max gap-2 px-[32px] py-0.5">
                         {CAMPAIGN_PRODUCTS.map((src, i) => (
                           <div
                             key={i}
                             className="relative h-[170px] w-[140px] shrink-0 overflow-hidden rounded-xl border border-white/40 bg-white [scroll-snap-align:start]"
-                            style={{ boxShadow: "0 8px 20px -6px rgba(0,0,0,0.25)" }}
+                            style={{}}
                           >
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img

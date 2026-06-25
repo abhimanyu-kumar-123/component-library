@@ -32,9 +32,10 @@ const BASICS = [
 /* What next — same as after-live */
 const STEPS = [
   { step: "STEP 1", title: "Start with your first campaign" },
-  { step: "STEP 2", title: "Find the right product market fit" },
-  { step: "STEP 3", title: "Optimise your reach" },
-  { step: "STEP 4", title: "scale up or reset" },
+  { step: "STEP 2", title: "Spend planned as ₹1,000 daily" },
+  { step: "STEP 3", title: "Find the right product market fit" },
+  { step: "STEP 4", title: "Optimise your reach" },
+  { step: "STEP 5", title: "scale up or reset" },
 ];
 
 function WhatNextTimeline({ onStep }: { onStep: () => void }) {
