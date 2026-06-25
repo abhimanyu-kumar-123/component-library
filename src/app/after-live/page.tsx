@@ -255,7 +255,7 @@ export default function AfterLiveScreen() {
                   "relative w-full rounded-2xl",
                   cardState === "exiting" && "motion-safe:animate-card-swap-out"
                 )}
-                style={{ boxShadow: "0 18px 40px -12px rgba(15,42,140,0.45)" }}
+                style={{}}
               >
                 {/* Background layer: gradient + texture overlay, clipped to rounded corners */}
                 <div className="absolute inset-0 z-0 overflow-hidden rounded-2xl bg-gradient-strategy">
