@@ -243,14 +243,15 @@ export default function AfterLiveScreen() {
               the blue card's natural compact size (264px). */}
           <div className="relative min-h-[490px]">
 
-            {/* Blue marketing-strategy card — new Figma 6045:7705 design */}
+            {/* Blue marketing-strategy card — new Figma 6045:7705 design.
+                Card uses no global px so the carousel can break out full-bleed. */}
             {cardState !== "congrats" && (
               <div className={cn(
-                "absolute inset-0 flex flex-col gap-3 rounded-2xl bg-gradient-strategy p-3 text-white",
+                "absolute inset-0 flex flex-col rounded-2xl bg-gradient-strategy text-white",
                 cardState === "exiting" && "motion-safe:animate-card-swap-out"
               )}>
-                {/* Title + subtitle */}
-                <div className="flex flex-col gap-2">
+                {/* Title + subtitle — px-3 pt-3 */}
+                <div className="flex flex-col gap-2 px-3 pt-3">
                   <div className="flex items-center gap-1 [&_svg]:size-4">
                     <Megaphone weight="regular" />
                     <span className="type-h2 font-medium text-white">Marketing strategy</span>
@@ -260,16 +261,21 @@ export default function AfterLiveScreen() {
                   </p>
                 </div>
 
-                {/* Products for campaign */}
-                <div className="flex flex-col gap-2">
+                {/* Products label — px-3 */}
+                <div className="px-3 pb-2 pt-3">
                   <span className="text-[13px] font-medium leading-[18px] text-white">
                     Products for campaign
                   </span>
-                  <div className="flex gap-2">
+                </div>
+
+                {/* Full-bleed horizontal carousel — -mx-4 breaks out to screen edges.
+                    Images scroll left→right with px-4 initial indent (matches main gutter). */}
+                <div className="-mx-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  <div className="flex gap-3 px-4 pb-1">
                     {CAMPAIGN_PRODUCTS.map((src, i) => (
                       <div
                         key={i}
-                        className="relative h-[170px] flex-1 overflow-hidden rounded-xl border border-white/40 bg-white"
+                        className="relative h-[170px] w-[140px] shrink-0 overflow-hidden rounded-xl border border-white/30 bg-white shadow-md"
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
@@ -277,15 +283,14 @@ export default function AfterLiveScreen() {
                           alt=""
                           className="absolute inset-0 h-full w-full object-cover object-top"
                         />
-                        {/* bottom fade */}
-                        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent" />
+                        <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-white to-transparent" />
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Campaign will target */}
-                <div className="flex flex-col gap-2 pt-1">
+                {/* Campaign will target + stats + button — px-3 pb-3 */}
+                <div className="flex flex-col gap-2 px-3 pb-3 pt-3">
                   <span className="text-[13px] font-medium leading-[18px] text-white">
                     Campaign will target
                   </span>
@@ -299,16 +304,15 @@ export default function AfterLiveScreen() {
                       </div>
                     ))}
                   </div>
+                  <Button
+                    variant="on-dark"
+                    size="md"
+                    className="w-full"
+                    onClick={() => { setReviewStep(1); setReviewOpen(true); }}
+                  >
+                    Review Strategy
+                  </Button>
                 </div>
-
-                <Button
-                  variant="on-dark"
-                  size="md"
-                  className="w-full"
-                  onClick={() => { setReviewStep(1); setReviewOpen(true); }}
-                >
-                  Review Strategy
-                </Button>
               </div>
             )}
 
