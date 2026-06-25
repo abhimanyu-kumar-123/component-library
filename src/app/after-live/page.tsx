@@ -241,7 +241,7 @@ export default function AfterLiveScreen() {
           {/* Card slot — both cards absolute inset-0 inside a fixed-height
               container so the surrounding content never shifts. Height matches
               the blue card's natural compact size (264px). */}
-          <div className="relative min-h-[490px]">
+          <div className="relative min-h-[560px]">
 
             {/* Blue marketing-strategy card — new Figma 6045:7705 design.
                 Card uses no global px so the carousel can break out full-bleed. */}
@@ -270,12 +270,12 @@ export default function AfterLiveScreen() {
 
                 {/* Full-bleed horizontal carousel — -mx-4 breaks out to screen edges.
                     Fixed h-[170px] + overflow-y-hidden prevents vertical scroll leaking. */}
-                <div className="-mx-4 h-[170px] touch-pan-x overflow-x-auto overflow-y-hidden overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <div className="-mx-4 h-[240px] touch-pan-x overflow-x-auto overflow-y-hidden overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                   <div className="flex h-full gap-3 pr-4">
                     {CAMPAIGN_PRODUCTS.map((src, i) => (
                       <div
                         key={i}
-                        className="relative h-[170px] w-[140px] shrink-0 overflow-hidden rounded-xl border border-white/30 bg-white shadow-md"
+                        className="relative h-[240px] w-[160px] shrink-0 overflow-hidden rounded-xl border border-white/30 bg-white shadow-md"
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
