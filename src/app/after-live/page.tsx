@@ -270,8 +270,8 @@ export default function AfterLiveScreen() {
 
                 {/* Full-bleed horizontal carousel — -mx-4 breaks out to screen edges.
                     Fixed h-[170px] + overflow-y-hidden prevents vertical scroll leaking. */}
-                <div className="-mx-4 h-[240px] touch-pan-x overflow-x-auto overflow-y-hidden overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                  <div className="flex h-full gap-3 pr-4">
+                <div className="-mx-4 h-[256px] touch-pan-x overflow-x-auto overflow-y-hidden overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  <div className="flex gap-3 pr-4 pb-4">
                     {CAMPAIGN_PRODUCTS.map((src, i) => (
                       <div
                         key={i}
