@@ -269,9 +269,9 @@ export default function AfterLiveScreen() {
                 </div>
 
                 {/* Full-bleed horizontal carousel — -mx-4 breaks out to screen edges.
-                    Images scroll left→right with px-4 initial indent (matches main gutter). */}
-                <div className="-mx-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                  <div className="flex gap-3 px-4 pb-1">
+                    Fixed h-[170px] + overflow-y-hidden prevents vertical scroll leaking. */}
+                <div className="-mx-4 h-[170px] overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  <div className="flex h-full gap-3 px-4">
                     {CAMPAIGN_PRODUCTS.map((src, i) => (
                       <div
                         key={i}
