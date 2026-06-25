@@ -130,7 +130,7 @@ export default function CampaignLiveScreen() {
           </button>
 
           {/* Campaign live card — matches transition card height exactly (264px) */}
-          <div className="flex min-h-[264px] flex-col items-center justify-between rounded-2xl bg-white p-4 text-center">
+          <div className="flex min-h-[490px] flex-col items-center justify-between rounded-2xl bg-white p-5 text-center">
             <span className="grid size-14 shrink-0 overflow-hidden rounded-full bg-surface-app">
               <RadarLoader />
             </span>

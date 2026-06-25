@@ -23,10 +23,16 @@ import { SelectorPill } from "@/components/ui/selector-pill";
 const AVATAR = "https://i.pravatar.cc/120?img=47";
 const POC_AVATAR = "https://i.pravatar.cc/120?img=12";
 
-/* Marketing-strategy card — 2×2 profile stats. */
-const STRATEGY_STATS = [
-  { label: "Target buyer", value: "Woman, Age 25-30" },
-  { label: "Target city", value: "Tier 2 and 3" },
+/* Marketing-strategy card — product images + campaign targeting stats. */
+const CAMPAIGN_PRODUCTS = [
+  "/images/campaign/product-1.jpg",
+  "/images/campaign/product-2.jpg",
+  "/images/campaign/product-3.jpg",
+];
+
+const CAMPAIGN_STATS = [
+  { label: "Audience", value: "Woman, Age 25-30" },
+  { label: "City", value: "Tier 2 and 3" },
   { label: "Key interests", value: "Wedding, Festivals" },
   { label: "Price range", value: "₹700 - ₹800" },
 ];
@@ -235,14 +241,15 @@ export default function AfterLiveScreen() {
           {/* Card slot — both cards absolute inset-0 inside a fixed-height
               container so the surrounding content never shifts. Height matches
               the blue card's natural compact size (264px). */}
-          <div className="relative min-h-[264px]">
+          <div className="relative min-h-[490px]">
 
-            {/* Blue marketing-strategy card — original compact layout */}
+            {/* Blue marketing-strategy card — new Figma 6045:7705 design */}
             {cardState !== "congrats" && (
               <div className={cn(
                 "absolute inset-0 flex flex-col gap-3 rounded-2xl bg-gradient-strategy p-3 text-white",
                 cardState === "exiting" && "motion-safe:animate-card-swap-out"
               )}>
+                {/* Title + subtitle */}
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-1 [&_svg]:size-4">
                     <Megaphone weight="regular" />
@@ -251,17 +258,49 @@ export default function AfterLiveScreen() {
                   <p className="type-body-2 text-white/70">
                     Based on previous input we have created your first marketing strategy.
                   </p>
+                </div>
+
+                {/* Products for campaign */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-[13px] font-medium leading-[18px] text-white">
+                    Products for campaign
+                  </span>
+                  <div className="flex gap-2">
+                    {CAMPAIGN_PRODUCTS.map((src, i) => (
+                      <div
+                        key={i}
+                        className="relative h-[170px] flex-1 overflow-hidden rounded-xl border border-white/40 bg-white"
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={src}
+                          alt=""
+                          className="absolute inset-0 h-full w-full object-cover object-top"
+                        />
+                        {/* bottom fade */}
+                        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Campaign will target */}
+                <div className="flex flex-col gap-2 pt-1">
+                  <span className="text-[13px] font-medium leading-[18px] text-white">
+                    Campaign will target
+                  </span>
                   <div className="grid grid-cols-2 gap-2">
-                    {STRATEGY_STATS.map((s) => (
+                    {CAMPAIGN_STATS.map((s) => (
                       <div key={s.label} className="flex flex-col rounded-lg bg-white/10 p-3">
                         <span className="type-caption text-white/60">{s.label}</span>
-                        <span className="text-[13px] font-semibold leading-[18px] text-white">
+                        <span className="text-[13px] font-medium leading-[18px] text-white">
                           {s.value}
                         </span>
                       </div>
                     ))}
                   </div>
                 </div>
+
                 <Button
                   variant="on-dark"
                   size="md"
@@ -276,7 +315,7 @@ export default function AfterLiveScreen() {
             {/* White congratulations card — Radar loader, same 264px height */}
             {cardState !== "strategy" && (
               <div className={cn(
-                "absolute inset-0 flex flex-col items-center justify-between rounded-2xl bg-white p-4 text-center pointer-events-none",
+                "absolute inset-0 flex flex-col items-center justify-between rounded-2xl bg-white p-5 text-center pointer-events-none",
                 cardState === "congrats" && "motion-safe:animate-card-swap-in"
               )}>
                 <span className="grid size-14 shrink-0 overflow-hidden rounded-full bg-surface-app">
