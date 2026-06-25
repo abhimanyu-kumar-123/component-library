@@ -241,76 +241,113 @@ export default function AfterLiveScreen() {
           {/* Card slot — both cards absolute inset-0 inside a fixed-height
               container so the surrounding content never shifts. Height matches
               the blue card's natural compact size (264px). */}
-          <div className="relative min-h-[560px]">
+          <div className="relative min-h-[490px]">
 
-            {/* Blue marketing-strategy card — new Figma 6045:7705 design.
-                Card uses no global px so the carousel can break out full-bleed. */}
+            {/* Blue marketing-strategy card — exact port of marketing-strategy.html
+                Outer: no overflow-hidden (carousel must bleed). bg layer clips separately.
+                card-bg: absolute inset-0, overflow-hidden, gradient + texture overlay.
+                card-inner: relative z-1, padding 12px 22px, gap 12px between sections. */}
             {cardState !== "congrats" && (
-              <div className={cn(
-                "absolute inset-0 flex flex-col rounded-2xl bg-gradient-strategy text-white",
-                cardState === "exiting" && "motion-safe:animate-card-swap-out"
-              )}>
-                {/* Title + subtitle — px-3 pt-3 */}
-                <div className="flex flex-col gap-2 px-3 pt-3">
-                  <div className="flex items-center gap-1 [&_svg]:size-4">
-                    <Megaphone weight="regular" />
-                    <span className="type-h2 font-medium text-white">Marketing strategy</span>
+              <div
+                className={cn(
+                  "absolute inset-0 rounded-2xl",
+                  cardState === "exiting" && "motion-safe:animate-card-swap-out"
+                )}
+                style={{ boxShadow: "0 18px 40px -12px rgba(15,42,140,0.45)" }}
+              >
+                {/* Background layer: gradient + texture overlay, clipped to rounded corners */}
+                <div className="absolute inset-0 z-0 overflow-hidden rounded-2xl bg-gradient-strategy">
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                      backgroundImage: "url('/images/card-texture.png')",
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      mixBlendMode: "overlay",
+                      opacity: 0.7,
+                    }}
+                  />
+                </div>
+
+                {/* Content layer */}
+                <div className="relative z-[1] flex flex-col gap-3 px-[22px] py-3 text-white">
+
+                  {/* Header: gap-2 between title row and subtitle */}
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-1.5 [&_svg]:size-4">
+                      <Megaphone weight="regular" />
+                      <span className="text-[16px] font-medium leading-5 text-white">Marketing strategy</span>
+                    </div>
+                    <p className="text-[12px] leading-[1.35] text-white/70">
+                      Based on previous input we have created your first marketing strategy.
+                    </p>
                   </div>
-                  <p className="type-body-2 text-white/70">
-                    Based on previous input we have created your first marketing strategy.
-                  </p>
-                </div>
 
-                {/* Products label — px-3 */}
-                <div className="px-3 pb-2 pt-3">
-                  <span className="text-[13px] font-medium leading-[18px] text-white">
-                    Products for campaign
-                  </span>
-                </div>
-
-                {/* Full-bleed horizontal carousel — -mx-4 breaks out to screen edges.
-                    Fixed h-[170px] + overflow-y-hidden prevents vertical scroll leaking. */}
-                <div className="-mx-4 h-[256px] touch-pan-x overflow-x-auto overflow-y-hidden overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                  <div className="flex gap-3 pr-4 pb-4">
-                    {CAMPAIGN_PRODUCTS.map((src, i) => (
-                      <div
-                        key={i}
-                        className="relative h-[240px] w-[160px] shrink-0 overflow-hidden rounded-xl border border-white/30 bg-white shadow-md"
-                      >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={src}
-                          alt=""
-                          className="absolute inset-0 h-full w-full object-cover object-top"
-                        />
+                  {/* Products section: gap-2 between label and carousel */}
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[13px] font-medium leading-[18px] text-white">
+                      Products for campaign
+                    </span>
+                    {/* Carousel: -ml-[38px] reaches screen left edge (22px card px + 16px main gutter).
+                        width calc(100%+76px) fills the full screen width.
+                        scroll-snap proximity snaps cards to the left. */}
+                    <div
+                      className="-ml-[38px] w-[calc(100%+76px)] touch-pan-x overflow-x-auto overflow-y-hidden overscroll-x-contain [scroll-padding-left:38px] [scroll-snap-type:x_proximity] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                    >
+                      <div className="flex w-max gap-2 px-[38px] py-0.5">
+                        {CAMPAIGN_PRODUCTS.map((src, i) => (
+                          <div
+                            key={i}
+                            className="relative h-[170px] w-[140px] shrink-0 overflow-hidden rounded-xl border border-white/40 bg-white [scroll-snap-align:start]"
+                            style={{ boxShadow: "0 8px 20px -6px rgba(0,0,0,0.25)" }}
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={src}
+                              alt=""
+                              className="block h-full w-full object-cover object-top"
+                            />
+                            {/* bottom white fade — height 36px per HTML */}
+                            <div className="absolute bottom-0 left-0 right-0 h-9 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+                          </div>
+                        ))}
                       </div>
-                    ))}
+                    </div>
                   </div>
-                </div>
 
-                {/* Campaign will target + stats + button — px-3 pb-3 */}
-                <div className="flex flex-col gap-2 px-3 pb-3 pt-3">
-                  <span className="text-[13px] font-medium leading-[18px] text-white">
-                    Campaign will target
-                  </span>
-                  <div className="grid grid-cols-2 gap-2">
-                    {CAMPAIGN_STATS.map((s) => (
-                      <div key={s.label} className="flex flex-col rounded-lg bg-white/10 p-3">
-                        <span className="type-caption text-white/60">{s.label}</span>
-                        <span className="text-[13px] font-medium leading-[18px] text-white">
-                          {s.value}
-                        </span>
-                      </div>
-                    ))}
+                  {/* Campaign will target: pt-1 extra + gap-2 between rows */}
+                  <div className="flex flex-col gap-2 pt-1">
+                    <span className="text-[13px] font-medium leading-[18px] text-white">
+                      Campaign will target
+                    </span>
+                    <div className="flex gap-2">
+                      {CAMPAIGN_STATS.slice(0, 2).map((s) => (
+                        <div key={s.label} className="flex min-w-0 flex-1 flex-col overflow-hidden rounded-lg bg-white/10 p-3">
+                          <span className="text-[10px] font-medium uppercase leading-[14px] text-white/60">{s.label}</span>
+                          <span className="text-[13px] font-medium leading-[18px] text-white whitespace-nowrap">{s.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex gap-2">
+                      {CAMPAIGN_STATS.slice(2).map((s) => (
+                        <div key={s.label} className="flex min-w-0 flex-1 flex-col overflow-hidden rounded-lg bg-white/10 p-3">
+                          <span className="text-[10px] font-medium uppercase leading-[14px] text-white/60">{s.label}</span>
+                          <span className="text-[13px] font-medium leading-[18px] text-white whitespace-nowrap">{s.value}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <Button
-                    variant="on-dark"
-                    size="md"
-                    className="w-full"
+
+                  {/* Button — white, inside the card gap flow */}
+                  <button
+                    type="button"
+                    className="h-9 w-full rounded-lg bg-white text-[13px] font-medium leading-[18px] text-[#1d2025] transition-transform active:scale-[0.98]"
+                    style={{ boxShadow: "0 2px 6px rgba(0,0,0,0.05)" }}
                     onClick={() => { setReviewStep(1); setReviewOpen(true); }}
                   >
                     Review Strategy
-                  </Button>
+                  </button>
+
                 </div>
               </div>
             )}
