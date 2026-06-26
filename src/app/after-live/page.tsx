@@ -70,11 +70,10 @@ const STEPS = [
 const STEP_TITLES = [
   "What do you want to target",
   "Who buys from you?",
-  "What you want to target",
   "Proposed creatives",
 ] as const;
 
-const STEP_CTAS = ["Next", "Next", "Next", "Looks good to me"] as const;
+const STEP_CTAS = ["Next", "Next", "Looks good to me"] as const;
 
 const BUYER_OPTIONS = [
   { label: "Woman", value: "woman" },
@@ -160,7 +159,7 @@ export default function AfterLiveScreen() {
 
   /* Review Strategy multi-step sheet */
   const [reviewOpen, setReviewOpen] = React.useState(false);
-  const [reviewStep, setReviewStep] = React.useState<1 | 2 | 3 | 4>(1);
+  const [reviewStep, setReviewStep] = React.useState<1 | 2 | 3>(1);
   /* Product selection sheet (opened from pencil icon in step 1) */
   const [productSelectOpen, setProductSelectOpen] = React.useState(false);
   const [selectedProducts, setSelectedProducts] = React.useState<number[]>([0, 1, 2]);
@@ -187,8 +186,8 @@ export default function AfterLiveScreen() {
     setCities((cur) => (cur.includes(c) ? cur.filter((x) => x !== c) : [...cur, c]));
 
   const handleReviewPrimary = () => {
-    if (reviewStep < 4) {
-      setReviewStep((s) => (s + 1) as 2 | 3 | 4);
+    if (reviewStep < 3) {
+      setReviewStep((s) => (s + 1) as 2 | 3);
     } else {
       // 1. Close sheet
       setReviewOpen(false);
@@ -445,7 +444,7 @@ export default function AfterLiveScreen() {
           onBack={
             reviewStep === 1
               ? () => { setReviewOpen(false); setReviewStep(1); }
-              : () => setReviewStep((s) => (s - 1) as 1 | 2 | 3)
+              : () => setReviewStep((s) => (s - 1) as 1 | 2)
           }
           primaryLabel={STEP_CTAS[reviewStep - 1]}
           onPrimary={handleReviewPrimary}
@@ -558,35 +557,10 @@ export default function AfterLiveScreen() {
             </div>
           )}
 
-          {/* Step 3 — What you want to target */}
+          {/* Step 3 — Proposed creatives */}
           {reviewStep === 3 && (
-            <div className="flex flex-col gap-4">
-              <h2 className="type-h1 text-text-primary">{STEP_TITLES[2]}</h2>
-              <SelectField
-                label="Hero product"
-                options={PRODUCT_OPTIONS}
-                value={heroProduct}
-                onValueChange={setHeroProduct}
-              />
-              <SelectField
-                label="Key interests & occasions"
-                options={INTERESTS_OPTIONS}
-                value={keyInterests}
-                onValueChange={setKeyInterests}
-              />
-              <SelectField
-                label="Price range"
-                options={PRICE_OPTIONS}
-                value={priceRange}
-                onValueChange={setPriceRange}
-              />
-            </div>
-          )}
-
-          {/* Step 4 — Proposed creatives */}
-          {reviewStep === 4 && (
             <div className="flex flex-col gap-3">
-              <h2 className="type-h1 text-text-primary">{STEP_TITLES[3]}</h2>
+              <h2 className="type-h1 text-text-primary">{STEP_TITLES[2]}</h2>
               {CREATIVES.map((c) => (
                 <div
                   key={c.title}
