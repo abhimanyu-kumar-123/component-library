@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import { CaretRight, ListChecks, Megaphone } from "@phosphor-icons/react";
+import { CaretRight, ListChecks, Megaphone, PencilSimple } from "@phosphor-icons/react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -57,12 +57,13 @@ const STEPS = [
 
 /* ── Review Strategy sheet ── */
 const STEP_TITLES = [
+  "What do you want to target",
   "Who buys from you?",
   "What you want to target",
   "Proposed creatives",
 ] as const;
 
-const STEP_CTAS = ["Next", "Next", "Looks good to me"] as const;
+const STEP_CTAS = ["Next", "Next", "Next", "Looks good to me"] as const;
 
 const BUYER_OPTIONS = [
   { label: "Woman", value: "woman" },
@@ -148,7 +149,7 @@ export default function AfterLiveScreen() {
 
   /* Review Strategy multi-step sheet */
   const [reviewOpen, setReviewOpen] = React.useState(false);
-  const [reviewStep, setReviewStep] = React.useState<1 | 2 | 3>(1);
+  const [reviewStep, setReviewStep] = React.useState<1 | 2 | 3 | 4>(1);
   /* Card swap state: 'strategy' → 'exiting' → 'congrats' */
   const [cardState, setCardState] = React.useState<"strategy" | "exiting" | "congrats">("strategy");
 
@@ -168,8 +169,8 @@ export default function AfterLiveScreen() {
     setCities((cur) => (cur.includes(c) ? cur.filter((x) => x !== c) : [...cur, c]));
 
   const handleReviewPrimary = () => {
-    if (reviewStep < 3) {
-      setReviewStep((s) => (s + 1) as 2 | 3);
+    if (reviewStep < 4) {
+      setReviewStep((s) => (s + 1) as 2 | 3 | 4);
     } else {
       // 1. Close sheet
       setReviewOpen(false);
@@ -414,7 +415,7 @@ export default function AfterLiveScreen() {
           />
         </div>
 
-        {/* ── Review Strategy — 3-step sheet ───────────────────────────── */}
+        {/* ── Review Strategy — 4-step sheet ───────────────────────────── */}
         <BottomSheet
           open={reviewOpen}
           onOpenChange={(open) => {
@@ -426,15 +427,60 @@ export default function AfterLiveScreen() {
           onBack={
             reviewStep === 1
               ? () => { setReviewOpen(false); setReviewStep(1); }
-              : () => setReviewStep((s) => (s - 1) as 1 | 2)
+              : () => setReviewStep((s) => (s - 1) as 1 | 2 | 3)
           }
           primaryLabel={STEP_CTAS[reviewStep - 1]}
           onPrimary={handleReviewPrimary}
         >
-          {/* Step 1 — Who buys from you? */}
+          {/* Step 1 — What do you want to target (NEW — product list + key interests) */}
           {reviewStep === 1 && (
             <div className="flex flex-col gap-4">
               <h2 className="type-h1 text-text-primary">{STEP_TITLES[0]}</h2>
+
+              {/* Products for campaign — white card with rows */}
+              <div className="overflow-hidden rounded-xl bg-white">
+                {/* Header row — no bottom divider */}
+                <div className="flex items-center justify-between px-3 py-2.5">
+                  <span className="type-body-2 text-text-secondary">Products for campaign</span>
+                  <PencilSimple weight="regular" className="size-4 text-text-primary" />
+                </div>
+                {/* Product rows — dotted divider inset 12px, no border on images */}
+                {CAMPAIGN_PRODUCTS.map((src, i) => (
+                  <div key={i}>
+                    {/* Dotted divider inset 12px from each side */}
+                    <div className="mx-3 border-t border-dashed border-border-divider" />
+                    <div className="flex items-center gap-3 px-3 py-2.5">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={src}
+                        alt=""
+                        className="size-[70px] shrink-0 rounded-xl object-cover object-top"
+                      />
+                      <div className="flex min-w-0 flex-col gap-1">
+                        <span className="text-[13px] font-medium leading-[18px] text-text-primary">
+                          Gold with pink Colour Kanjivaram Pure Silk Saree
+                        </span>
+                        <span className="type-body-2 text-text-secondary">SD-1001</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Key interests & occasions */}
+              <SelectField
+                label="Key interests & occasions"
+                options={INTERESTS_OPTIONS}
+                value={keyInterests}
+                onValueChange={setKeyInterests}
+              />
+            </div>
+          )}
+
+          {/* Step 2 — Who buys from you? */}
+          {reviewStep === 2 && (
+            <div className="flex flex-col gap-4">
+              <h2 className="type-h1 text-text-primary">{STEP_TITLES[1]}</h2>
               <SelectField
                 label="Primary buyer"
                 options={BUYER_OPTIONS}
@@ -486,10 +532,10 @@ export default function AfterLiveScreen() {
             </div>
           )}
 
-          {/* Step 2 — What you want to target */}
-          {reviewStep === 2 && (
+          {/* Step 3 — What you want to target */}
+          {reviewStep === 3 && (
             <div className="flex flex-col gap-4">
-              <h2 className="type-h1 text-text-primary">{STEP_TITLES[1]}</h2>
+              <h2 className="type-h1 text-text-primary">{STEP_TITLES[2]}</h2>
               <SelectField
                 label="Hero product"
                 options={PRODUCT_OPTIONS}
@@ -511,10 +557,10 @@ export default function AfterLiveScreen() {
             </div>
           )}
 
-          {/* Step 3 — Proposed creatives */}
-          {reviewStep === 3 && (
+          {/* Step 4 — Proposed creatives */}
+          {reviewStep === 4 && (
             <div className="flex flex-col gap-3">
-              <h2 className="type-h1 text-text-primary">{STEP_TITLES[2]}</h2>
+              <h2 className="type-h1 text-text-primary">{STEP_TITLES[3]}</h2>
               {CREATIVES.map((c) => (
                 <div
                   key={c.title}
