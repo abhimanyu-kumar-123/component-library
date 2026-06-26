@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import { CaretRight, ListChecks, Megaphone, PencilSimple } from "@phosphor-icons/react";
+import { CaretRight, CheckCircle, ListChecks, Megaphone, PencilSimple } from "@phosphor-icons/react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -28,6 +28,17 @@ const CAMPAIGN_PRODUCTS = [
   "/images/campaign/product-1.jpg",
   "/images/campaign/product-2.jpg",
   "/images/campaign/product-3.jpg",
+];
+
+/* Full product catalog for the "Select banner images" sheet. */
+const PRODUCT_CATALOG = [
+  { src: CAMPAIGN_PRODUCTS[0], name: "Gold with pink Colour Kanjivaram Pure Silk Saree", sku: "SD-1001" },
+  { src: CAMPAIGN_PRODUCTS[1], name: "Red Bandhani Pure Silk Saree", sku: "SD-1002" },
+  { src: CAMPAIGN_PRODUCTS[2], name: "Floral Printed Organza Saree", sku: "SD-1003" },
+  { src: CAMPAIGN_PRODUCTS[0], name: "Teal Zari Woven Kanjivaram Silk Saree", sku: "SD-1004" },
+  { src: CAMPAIGN_PRODUCTS[1], name: "Crimson Traditional Silk Saree", sku: "SD-1005" },
+  { src: CAMPAIGN_PRODUCTS[2], name: "Pastel Floral Chiffon Saree", sku: "SD-1006" },
+  { src: CAMPAIGN_PRODUCTS[0], name: "Golden Embroidered Banarasi Saree", sku: "SD-1007" },
 ];
 
 const CAMPAIGN_STATS = [
@@ -150,6 +161,13 @@ export default function AfterLiveScreen() {
   /* Review Strategy multi-step sheet */
   const [reviewOpen, setReviewOpen] = React.useState(false);
   const [reviewStep, setReviewStep] = React.useState<1 | 2 | 3 | 4>(1);
+  /* Product selection sheet (opened from pencil icon in step 1) */
+  const [productSelectOpen, setProductSelectOpen] = React.useState(false);
+  const [selectedProducts, setSelectedProducts] = React.useState<number[]>([0, 1, 2]);
+  const toggleProduct = (idx: number) =>
+    setSelectedProducts((cur) =>
+      cur.includes(idx) ? cur.filter((i) => i !== idx) : [...cur, idx]
+    );
   /* Card swap state: 'strategy' → 'exiting' → 'congrats' */
   const [cardState, setCardState] = React.useState<"strategy" | "exiting" | "congrats">("strategy");
 
@@ -439,32 +457,40 @@ export default function AfterLiveScreen() {
 
               {/* Products for campaign — white card with rows */}
               <div className="overflow-hidden rounded-xl bg-white">
-                {/* Header row — no bottom divider */}
+                {/* Header row — pencil opens product selection sheet */}
                 <div className="flex items-center justify-between px-3 py-2.5">
                   <span className="type-body-2 text-text-secondary">Products for campaign</span>
-                  <PencilSimple weight="regular" className="size-4 text-text-primary" />
+                  <button
+                    type="button"
+                    onClick={() => setProductSelectOpen(true)}
+                    className="rounded p-0.5 outline-none transition-opacity active:opacity-60"
+                  >
+                    <PencilSimple weight="regular" className="size-4 text-text-primary" />
+                  </button>
                 </div>
-                {/* Product rows — dotted divider inset 12px, no border on images */}
-                {CAMPAIGN_PRODUCTS.map((src, i) => (
-                  <div key={i}>
-                    {/* Dotted divider only between rows (skip before first item) */}
-                    {i > 0 && <div className="mx-3 border-t border-dashed border-border-divider" />}
-                    <div className="flex items-center gap-3 px-3 py-2.5">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={src}
-                        alt=""
-                        className="size-[70px] shrink-0 rounded-xl object-cover object-top"
-                      />
-                      <div className="flex min-w-0 flex-col gap-1">
-                        <span className="text-[13px] font-medium leading-[18px] text-text-primary">
-                          Gold with pink Colour Kanjivaram Pure Silk Saree
-                        </span>
-                        <span className="type-body-2 text-text-secondary">SD-1001</span>
+                {/* Selected product rows — dotted divider inset 12px, no image border */}
+                {selectedProducts.map((idx, i) => {
+                  const p = PRODUCT_CATALOG[idx];
+                  return (
+                    <div key={idx}>
+                      <div className="mx-3 border-t border-dashed border-border-divider" />
+                      <div className="flex items-center gap-3 px-3 py-2.5">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={p.src}
+                          alt=""
+                          className="size-[70px] shrink-0 rounded-xl object-cover object-top"
+                        />
+                        <div className="flex min-w-0 flex-col gap-1">
+                          <span className="text-[13px] font-medium leading-[18px] text-text-primary">
+                            {p.name}
+                          </span>
+                          <span className="type-body-2 text-text-secondary">{p.sku}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               {/* Key interests & occasions */}
@@ -575,6 +601,60 @@ export default function AfterLiveScreen() {
               ))}
             </div>
           )}
+        </BottomSheet>
+
+        {/* ── Product selection sheet (pencil icon → no back button) ── */}
+        <BottomSheet
+          open={productSelectOpen}
+          onOpenChange={setProductSelectOpen}
+          title="Select banner images"
+          footer={
+            <div className="flex w-full items-center gap-3">
+              <span className="type-body-1 text-text-secondary shrink-0">
+                {selectedProducts.length}/{PRODUCT_CATALOG.length} Selected
+              </span>
+              <Button
+                variant="primary"
+                size="lg"
+                className="flex-1"
+                onClick={() => setProductSelectOpen(false)}
+              >
+                Select
+              </Button>
+            </div>
+          }
+        >
+          <div className="flex flex-col divide-y divide-border-divider">
+            {PRODUCT_CATALOG.map((product, idx) => {
+              const isSelected = selectedProducts.includes(idx);
+              return (
+                <button
+                  key={idx}
+                  type="button"
+                  className="flex w-full items-center gap-3 py-3 text-left outline-none transition-colors active:bg-surface-muted"
+                  onClick={() => toggleProduct(idx)}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={product.src}
+                    alt=""
+                    className="size-[60px] shrink-0 rounded-xl object-cover object-top"
+                  />
+                  <div className="flex min-w-0 flex-1 flex-col gap-1">
+                    <span className="text-[13px] font-medium leading-[18px] text-text-primary">
+                      {product.name}
+                    </span>
+                    <span className="type-body-2 text-text-secondary">{product.sku}</span>
+                  </div>
+                  {isSelected ? (
+                    <CheckCircle weight="fill" className="size-6 shrink-0 text-success" />
+                  ) : (
+                    <span className="size-6 shrink-0 rounded-full border-2 border-border-divider" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </BottomSheet>
       </div>
     </div>
