@@ -10,6 +10,7 @@ export function SuccessConfetti({ className }: { className?: string }) {
       animationData={successConfettiAnimation}
       loop={false}
       autoplay
+      speed={0.5}
       className={cn("size-full", className)}
     />
   );
