@@ -219,7 +219,7 @@ export default function PocChangeScreen() {
           <CheckCircle weight="fill" className="size-[70px] text-success" />
           <div className="flex items-center justify-between gap-3">
             <div className="flex min-w-0 flex-1 flex-col gap-1">
-              <h2 className="type-h2 text-text-primary">Congrats! Your store is live.</h2>
+              <h2 className="type-h1 text-text-primary">Congrats! Your store is live.</h2>
               <p className="type-body-2 text-text-secondary">
                 Anjali handed you over to{" "}
                 <span className="font-medium text-text-primary">Arunabh Singh,</span>{" "}
@@ -228,14 +228,15 @@ export default function PocChangeScreen() {
             </div>
             <UserThumbnail src={POC_AVATAR} size={48} className="shrink-0" />
           </div>
-          <Button
-            variant="primary"
-            size="lg"
-            className="w-full"
-            onClick={() => router.push("/after-live")}
-          >
-            TAP TO DISMISS
-          </Button>
+          <div>
+            <Button
+              variant="primary"
+              size="lg"
+              onClick={() => router.push("/after-live")}
+            >
+              TAP TO DISMISS
+            </Button>
+          </div>
         </div>
 
         {/* Bottom nav */}
