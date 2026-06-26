@@ -447,8 +447,8 @@ export default function AfterLiveScreen() {
                 {/* Product rows — dotted divider inset 12px, no border on images */}
                 {CAMPAIGN_PRODUCTS.map((src, i) => (
                   <div key={i}>
-                    {/* Dotted divider inset 12px from each side */}
-                    <div className="mx-3 border-t border-dashed border-border-divider" />
+                    {/* Dotted divider only between rows (skip before first item) */}
+                    {i > 0 && <div className="mx-3 border-t border-dashed border-border-divider" />}
                     <div className="flex items-center gap-3 px-3 py-2.5">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
